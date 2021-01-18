@@ -1,12 +1,32 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <v-app>
+    <nav-bar></nav-bar>
+    <v-main>
+      <drawer></drawer>
+
+      <router-view />
+    </v-main>
+  </v-app>
+  <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+    </div> -->
 </template>
+
+<script>
+import Drawer from "./components/Drawer.vue";
+import NavBar from "./components/NavBar.vue";
+
+export default {
+  components: {
+    NavBar,
+    Drawer,
+  },
+  data: () => ({
+    drawer: false,
+  }),
+};
+</script>
 
 <style lang="scss">
 #app {
