@@ -1,9 +1,11 @@
+/* eslint-disable no-case-declarations */
 export default function Calculator() {
   return {
     values: ["0", "0"],
     currVal: "0",
     history: "",
     justReset: true,
+    mrcClickedPreviously: false,
     op: "",
     append(appendStr) {
       if (this.currVal === "0") {
@@ -27,13 +29,57 @@ export default function Calculator() {
         this.op = op;
         this.history = this.currVal + " " + op;
         this.currVal = "0";
-      } else {
-        this.history = this.history + " " + this.currVal;
-        this.currVal = this.calculate();
-        this.reset();
       }
 
       console.log(this.op);
+    },
+    action(str) {
+      switch (str) {
+        case "AC":
+          this.reset();
+          this.currVal = "0";
+          this.afterReset();
+          break;
+        case "CE":
+          this.currVal = "0";
+
+          break;
+        case "C":
+          if (this.currVal != "0")
+            this.currVal = this.currVal.substr(0, this.currVal.length - 1);
+
+          if (this.currVal.length === 0) this.currVal = "0";
+          break;
+        case "=":
+          this.history = this.history + " " + this.currVal;
+          this.currVal = this.calculate();
+          this.reset();
+          break;
+        case "+/-":
+          this.currVal = this.currVal.startsWith("-")
+            ? this.currVal.substr(1)
+            : "-" + this.currVal;
+          break;
+        case "M+":
+        case "M-":
+          const mem = localStorage.getItem("mem") ?? 0;
+          console.log(mem);
+          localStorage.setItem(
+            "mem",
+            str === "M+"
+              ? parseFloat(mem) + parseFloat(this.currVal)
+              : parseFloat(mem) - parseFloat(this.currVal)
+          );
+          break;
+        case "MRC":
+          this.currVal = localStorage.getItem("mem") ?? "0";
+          if (this.mrcClickedPreviously) localStorage.removeItem("mem");
+
+          this.mrcClickedPreviously = !this.mrcClickedPreviously;
+          break;
+        default:
+          break;
+      }
     },
     calculate() {
       console.log(this.history);
@@ -52,22 +98,7 @@ export default function Calculator() {
       }
     },
     handleSpecialOp(op) {
-      if (op === "C") {
-        this.currVal = "0";
-        this.afterReset();
-        return true;
-      } else if (op === "CE") {
-        this.reset();
-        this.currVal = "0";
-        this.history = "";
-        return true;
-      } else if (op === "+/-") {
-        this.currVal = this.currVal.startsWith("-")
-          ? this.currVal.substr(1)
-          : "-" + this.currVal;
-
-        return true;
-      } else if (op === "√") {
+      if (op === "√") {
         this.history = "√" + this.currVal;
         this.currVal = Math.sqrt(this.currVal);
         return true;

@@ -1,9 +1,10 @@
 <template>
-  <v-container fluid class="pa-0 ma-0">
-    <v-btn class="btn btn-primary shadow-sm m-5" x-large @click="clicked()">
-      {{ str }}
-    </v-btn>
-  </v-container>
+  <div
+    class="input-btn row justify-content-center align-self-center"
+    @click="clicked()"
+  >
+    {{ str }}
+  </div>
 </template>
 <script>
 export default {
@@ -23,5 +24,13 @@ export default {
   },
 };
 </script>
-<style lang="">
+<style lang="scss" scoped>
+.input-btn:hover {
+  cursor: pointer;
+}
+
+.input-btn {
+  background-color: darkblue;
+  color: white;
+}
 </style>
