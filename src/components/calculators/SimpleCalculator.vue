@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <div class="calculator">
-      <div class="answer d-flex justify-end">{{ cal.currVal }}</div>
       <div class="display">{{ cal.history }}</div>
+      <div class="answer d-flex justify-end">{{ cal.currVal }}</div>
       <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
       <div @click="actionClicked('M+')" class="btn operator">M+</div>
       <div @click="actionClicked('M-')" class="btn operator">M-</div>
@@ -241,10 +241,9 @@ body {
 
 .display {
   color: #a3a3a3;
-  border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 15px;
   overflow: hidden;
   text-overflow: clip;
+  margin: 0;
 }
 
 .answer {
@@ -252,6 +251,9 @@ body {
   color: #146080;
   font-size: 55px;
   height: 65px;
+  margin: 0;
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 15px;
 }
 
 .zero {
