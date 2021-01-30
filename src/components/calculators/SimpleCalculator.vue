@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <div class="calculator">
-      <div class="answer">{{ cal.currVal }}</div>
+      <div class="answer d-flex justify-end">{{ cal.currVal }}</div>
       <div class="display">{{ cal.history }}</div>
       <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
       <div @click="actionClicked('M+')" class="btn operator">M+</div>
