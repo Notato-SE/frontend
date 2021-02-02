@@ -8,6 +8,10 @@ export default function Calculator() {
     mrcClickedPreviously: false,
     op: "",
     append(appendStr) {
+      if (this.currVal.length > 15) return;
+
+      this.resetMrcPreviouslyClicked();
+
       if (this.justReset) {
         this.reset();
         this.currVal = "0";
@@ -26,6 +30,8 @@ export default function Calculator() {
       this.afterReset();
     },
     setOp(op) {
+      this.resetMrcPreviouslyClicked();
+
       if (this.handleSpecialOp(op)) {
         this.justReset = true;
         return;
@@ -97,6 +103,7 @@ export default function Calculator() {
           break;
       }
 
+      if (str !== "MRC") this.resetMrcPreviouslyClicked();
       this.checkAndFormatCurrVal();
     },
     calculate() {
@@ -134,6 +141,9 @@ export default function Calculator() {
       }
 
       return false;
+    },
+    resetMrcPreviouslyClicked() {
+      if (this.mrcClickedPreviously) this.mrcClickedPreviously = false;
     },
   };
 }

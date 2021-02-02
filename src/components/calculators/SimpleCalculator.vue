@@ -2,14 +2,32 @@
   <v-container fluid class="d-flex justify-center my-5">
     <div class="calculator">
       <div class="display">{{ cal.history }}</div>
-      <div class="answer d-flex justify-end">{{ cal.currVal }}</div>
+      <div class="answer d-flex flex-wrap justify-end">
+        <p
+          class="text-right"
+          style="
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+          "
+        >
+          <span v-if="cal.currVal.length < 14">
+            <br />
+            {{ cal.currVal }}
+          </span>
+          <span v-else>
+            {{ cal.currVal.substr(0, cal.currVal.length - 13) }} <br />
+            {{ cal.currVal.substr(cal.currVal.length - 13) }}
+          </span>
+        </p>
+      </div>
       <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
       <div @click="actionClicked('M+')" class="btn operator">M+</div>
       <div @click="actionClicked('M-')" class="btn operator">M-</div>
       <div @click="actionClicked('+/-')" class="btn operator">+/-</div>
       <div @click="actionClicked('AC')" class="btn operator">AC</div>
       <div @click="actionClicked('CE')" class="btn operator">CE</div>
-      <div @click="actionClicked('C')" class="btn operator">C</div>
+      <div @click="actionClicked('C')" class="btn operator">Del</div>
       <div @click="operatorClicked('/')" class="btn operator">/</div>
       <div @click="appendVal('7')" class="btn">7</div>
       <div @click="appendVal('8')" class="btn">8</div>
@@ -109,6 +127,7 @@ body {
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 3px 80px -30px rgba(13, 81, 134, 1);
+  width: 340px;
 }
 
 .btn,
@@ -125,25 +144,32 @@ body {
   border-radius: 5px;
 }
 
+.btn:hover,
+.zero:hover {
+  background-color: #484848;
+  color: #f4faff;
+}
+
 .display,
 .answer {
   grid-column: 1 / 5;
   display: flex;
-  align-items: center;
+  align-items: left;
+  /* text-overflow: clip; */
+  /* height: 10vh; */
+  width: 100%;
 }
 
 .display {
   color: #a3a3a3;
-  overflow: hidden;
-  text-overflow: clip;
   margin: 0;
 }
 
 .answer {
   font-weight: 500;
   color: #146080;
-  font-size: 55px;
-  height: 65px;
+  font-size: 38px;
+  /* height: 65px; */
   margin: 0;
   border-bottom: 1px solid #e1e1e1;
   margin-bottom: 15px;
@@ -156,5 +182,10 @@ body {
 .operator {
   background-color: #d9efff;
   color: #3fa9fc;
+}
+
+.operator:hover {
+  color: #d9efff;
+  background-color: #3fa9fc;
 }
 </style>
