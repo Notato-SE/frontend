@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="d-flex justify-center my-5">
     <div class="calculator">
       <div class="display">{{ cal.history }}</div>
       <div class="answer d-flex justify-end">{{ cal.currVal }}</div>
@@ -38,113 +38,6 @@ export default {
   // components: { CalBtn, InputDisplay },
   data: () => ({
     cal: new Calculator(),
-    keys: [
-      [
-        {
-          str: "CE",
-          type: "op",
-        },
-        {
-          str: "C",
-          type: "op",
-        },
-        {
-          str: "+/-",
-          type: "op",
-        },
-        {
-          str: "÷",
-          realOp: "/",
-          type: "op",
-        },
-        {
-          str: "%",
-          type: "op",
-        },
-      ],
-      [
-        {
-          str: "7",
-          type: "input",
-        },
-        {
-          str: "8",
-          type: "input",
-        },
-        {
-          str: "9",
-          type: "input",
-        },
-        {
-          str: "*",
-          type: "op",
-        },
-        {
-          str: "√",
-          type: "op",
-        },
-      ],
-      [
-        {
-          str: "4",
-          type: "input",
-        },
-        {
-          str: "5",
-          type: "input",
-        },
-        {
-          str: "6",
-          type: "input",
-        },
-        {
-          str: "-",
-          type: "op",
-        },
-        {
-          str: "x^2",
-          type: "op",
-        },
-      ],
-      [
-        {
-          str: "1",
-          type: "input",
-        },
-        {
-          str: "2",
-          type: "input",
-        },
-        {
-          str: "3",
-          type: "input",
-        },
-        {
-          str: "+",
-          type: "op",
-        },
-        {
-          str: "1/x",
-          type: "op",
-        },
-      ],
-      [
-        {
-          str: "0",
-          type: "input",
-          colspan: 2,
-        },
-        {
-          str: ".",
-          type: "input",
-        },
-        {
-          str: "=",
-          type: "op",
-          colspan: 2,
-        },
-      ],
-    ],
   }),
   methods: {
     appendVal(appendStr) {
@@ -210,7 +103,7 @@ body {
   grid-template-columns: repeat(4, 60px);
   grid-gap: 12px;
   padding: 35px;
-  font-family: "Poppins";
+  font-family: "Helvetica";
   font-weight: 300;
   font-size: 18px;
   background-color: #ffffff;

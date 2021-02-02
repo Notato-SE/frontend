@@ -8,12 +8,20 @@ export default function Calculator() {
     mrcClickedPreviously: false,
     op: "",
     append(appendStr) {
+      if (this.justReset) {
+        this.reset();
+        this.currVal = "0";
+      }
+      if (appendStr === "." && this.currVal.includes(".")) return;
+
       if (this.currVal === "0") {
         this.currVal = appendStr === "." ? "0." : appendStr;
       } else {
         if (this.currVal === "-0") this.currVal = "-" + appendStr;
         else this.currVal = this.currVal + appendStr;
       }
+
+      this.checkAndFormatCurrVal();
 
       this.afterReset();
     },
@@ -25,15 +33,25 @@ export default function Calculator() {
 
       this.afterReset();
 
-      if (this.op === "" && op !== "=") {
+      if (this.op === "") {
         this.op = op;
         this.history = this.currVal + " " + op;
         this.currVal = "0";
       }
 
       console.log(this.op);
+      this.checkAndFormatCurrVal();
+    },
+    checkAndFormatCurrVal() {
+      if (this.currVal === "-" || this.currVal === "") this.currVal = "0";
     },
     action(str) {
+      if (this.justReset) {
+        this.reset();
+        this.currVal = "0";
+        this.history = "";
+      }
+
       switch (str) {
         case "AC":
           this.reset();
@@ -42,15 +60,13 @@ export default function Calculator() {
           break;
         case "CE":
           this.currVal = "0";
-
           break;
         case "C":
           if (this.currVal != "0")
             this.currVal = this.currVal.substr(0, this.currVal.length - 1);
-
-          if (this.currVal.length === 0) this.currVal = "0";
           break;
         case "=":
+          if (this.op === "") break;
           this.history = this.history + " " + this.currVal;
           this.currVal = this.calculate();
           this.reset();
@@ -62,7 +78,7 @@ export default function Calculator() {
           break;
         case "M+":
         case "M-":
-          const mem = localStorage.getItem("mem") ?? 0;
+          const mem = localStorage.getItem("mem") ?? "0";
           console.log(mem);
           localStorage.setItem(
             "mem",
@@ -80,9 +96,14 @@ export default function Calculator() {
         default:
           break;
       }
+
+      this.checkAndFormatCurrVal();
     },
     calculate() {
       console.log(this.history);
+      if (this.values[0] === "0" && this.currVal === "0" && this.op === "/")
+        return "Division by zero";
+
       this.justReset = true;
       return eval(this.history).toString();
     },
