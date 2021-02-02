@@ -11,7 +11,12 @@
             word-break: break-all;
           "
         >
-          <span v-if="cal.currVal.length < 14">
+          <span
+            v-if="cal.currVal.length < 14 || cal.currVal === 'Division by zero'"
+            :class="`color: ${
+              cal.currVal === 'Division by zero' ? 'red' : '#146080'
+            } !important`"
+          >
             <br />
             {{ cal.currVal }}
           </span>

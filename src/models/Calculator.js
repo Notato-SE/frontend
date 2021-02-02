@@ -8,7 +8,7 @@ export default function Calculator() {
     mrcClickedPreviously: false,
     op: "",
     append(appendStr) {
-      if (this.currVal.length > 15) return;
+      if (this.currVal.length === 27) return;
 
       this.resetMrcPreviouslyClicked();
 
@@ -126,6 +126,11 @@ export default function Calculator() {
       }
     },
     handleSpecialOp(op) {
+      if (this.currVal === "Division by zero") {
+        this.reset();
+        return true;
+      }
+
       if (op === "√") {
         this.history = "√" + this.currVal;
         this.currVal = Math.sqrt(this.currVal);
