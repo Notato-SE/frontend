@@ -22,6 +22,36 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Calculator.vue"),
   },
+  {
+    path: "/signup",
+    name: "SignUp",
+    component: () => 
+    import("../components/Auth/Signup.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => 
+    import("../components/Auth/Login.vue"),
+  },
+  {
+    path: "/otpcode",
+    name: "OtpCode",
+    component: () => 
+    import("../components/Auth/SendOtpCode.vue"),
+  },
+  {
+    path: "/resetpassword",
+    name: "ResetPassword",
+    component: () => 
+    import("../components/Auth/ResetPassword.vue"),
+  },
+  {
+    path: "/forgotpassword",
+    name: "OtpCode",
+    component: () => 
+    import("../components/Auth/ForgotPassword.vue"),
+  }
 ];
 
 const router = new VueRouter({

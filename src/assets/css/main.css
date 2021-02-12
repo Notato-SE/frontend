@@ -1,0 +1,19 @@
+
+.v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.v-text-field--outlined .v-label {
+  top: auto !important;
+}
+
+.text-link {
+  font-weight: 700;
+  color: #2854cb;
+  float: right;
+  margin-bottom: 30px;
+}
+.v-dialog{
+    box-shadow: none !important;
+}
