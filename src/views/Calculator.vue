@@ -35,7 +35,7 @@ export default {
         text: "Scientific Calculator",
       },
     ],
-  }),
+  })
 };
 </script>
 <style lang="scss">

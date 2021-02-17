@@ -1,19 +1,18 @@
 <template>
-  <div class="app">
-    <v-app id="inspire">
+
+    <v-container>
+      <Alert :message="message" :error="error" :success="success"></Alert>
       <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="450px">
-          <template v-slot:activator="{ on, attrs }">
+         <!-- <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
               Open Dialog
             </v-btn>
-          </template>
+          </template> -->
           <v-card rounded="xl">
             <v-card-title class="mt-4 mb-2">
               <span>Welcome back, my friend!</span>
             </v-card-title>
-            <v-card-body>
-              <form @submit.prevent="login">
+              <v-form v-model="isValid" @submit.prevent="submit">
                 <v-container>
                   <v-row class="mx-4">
                     <label class="d-flex justify-content-start text-dark">
@@ -26,6 +25,9 @@
                         type="email"
                         single-line
                         outlined
+                        v-model="user.email"
+                        :rules="emailRules"
+                        required
                       >
                       </v-text-field>
                     </v-col>
@@ -36,6 +38,7 @@
                     </label>
                     <v-col cols="12">
                       <v-text-field
+                        v-model="user.password"
                         class="style-field"
                         label="default-input"
                         type="password"
@@ -44,22 +47,24 @@
                         outlined
                         persistent-hint
                         hint="Your password must be longer than 8 character."
+                        :rules="passwordRules"
+                        required
                       >
                       </v-text-field>
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <v-btn color="primary" class="my-4" width="100%">
+                      <v-btn  type="submit" color="primary" class="my-4" width="100%" :disabled="!isValid">
                         Login</v-btn
                       >
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <span color="primary" class="text-link"
-                        >Forgot Password?</span
-                      >
+                          <span @click="forgotClicked" color="primary" class="text-link"   >
+                             Forgot Password?
+                          </span>
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
@@ -73,22 +78,62 @@
                     </v-col>
                   </v-row>
                 </v-container>
-              </form>
-            </v-card-body>
+              </v-form>
           </v-card>
-        </v-dialog>
       </v-row>
-    </v-app>
-  </div>
+    </v-container>
+
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import Alert from '../Alert.vue';
+
 export default {
+  name: 'login',
+  components: { Alert },
+  props: ['forgotClicked', 'knowPassword'],
   data: () => {
     return {
-      dialog: false,
+      dialog: true,
+      user: {
+        email: "",
+        password: ""
+      },
+      isValid: true,
+      emailRules: [ 
+          v => !!v || 'Email is required', 
+          v => /.+@.+/.test(v) || 'E-mail must be valid' 
+      ],
+      passwordRules: [ 
+        v => !!v || 'Password is required', 
+        v => (v && v.length >= 5) || 'Password must have 5+ characters' 
+      ],
+      success: false,
+      error: false,
+      message: null
     };
   },
+  methods: {
+    ...mapActions(['login']),
+    async submit()
+    {
+      try{
+       var resp = await this.login(this.user);
+       this.success = true;
+       this.error = false;
+       this.message = resp.data.message;
+      }
+      catch
+      {
+        const err =  this.$store.getters.stateErrors;
+        this.message = err.message;
+        this.success = false;
+        this.error = true;
+      }
+      this.dialog = false;
+    }
+  }
 };
 </script>
 <style>

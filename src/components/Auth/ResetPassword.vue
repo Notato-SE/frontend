@@ -1,19 +1,12 @@
 <template>
-  <div class="app">
-    <v-app id="inspire">
+    <v-container>
+      <Alert :message="message" :error="error" :success="success"></Alert>
       <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="450px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark v-bind="attrs" v-on="on">
-              Open Dialog
-            </v-btn>
-          </template>
           <v-card rounded="xl">
             <v-card-title class="mt-4 mb-2">
               <span>Please tell us your email address so that we can help you.</span>
             </v-card-title>
-            <v-card-body>
-              <form @submit.prevent="signup">
+              <v-form  v-model="isValid" @submit.prevent="submit">
                 <v-container>
                   <v-row class="mx-4">
                     <label class="d-flex justify-content-start text-dark">
@@ -26,41 +19,82 @@
                         type="email"
                         single-line
                         outlined
+                        v-model="user.email"
+                        :rules="emailRules"
+                        required
                       >
                       </v-text-field>
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <v-btn color="primary" class="my-4" width="100%">
-                        SEND CODE</v-btn
-                      >
+                       <v-btn type="submit" :disabled="!isValid" color="primary" class="my-4" width="100%"  >
+                       SEND CODE 
+                       </v-btn> 
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <span color="primary" class="text-link"
-                        >Already know password?</span
-                      >
+                      <span @click="knowPassword" color="primary" class="text-link"
+                        >Already know password?</span>
                     </v-col>
                   </v-row>
                 </v-container>
-              </form>
-            </v-card-body>
+              </v-form>
           </v-card>
-        </v-dialog>
       </v-row>
-    </v-app>
-  </div>
+   </v-container>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import Alert from '../Alert.vue';
+
 export default {
+  name: "reset-password",
+  props: ['knowPassword'],
+  components: { Alert },
   data: () => {
     return {
       dialog: false,
+      success: false,
+      user: {
+        email: '',
+      },
+      error: false,
+      message: null,
+      isValid: true,
+      emailRules: [ 
+          v => !!v || 'Email is required', 
+          v => /.+@.+/.test(v) || 'E-mail must be valid' 
+      ],
     };
   },
+  methods:
+  {
+    ...mapActions(['forgotPassword']),
+    async submit()
+    {
+       try{
+       var resp = await this.forgotPassword(this.user.email);
+       this.success = true;
+       this.error = false;
+       console.log(resp);
+       this.message = resp.data.message;
+       this.$emit('validEmail', true);
+      }
+      catch(e)
+      {
+        this.validEmail = false;
+        const err =  this.$store.getters.stateErrors;
+        this.message = err.message;
+        this.success = false;
+        this.error = true;
+        this.$emit('validEmail', false);
+      }
+      this.dialog = false;
+    }
+  }
 };
 </script>
 

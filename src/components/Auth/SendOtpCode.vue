@@ -1,19 +1,11 @@
 <template>
-  <div class="app">
-    <v-app id="inspire">
+     <v-container>
       <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="450px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark v-bind="attrs" v-on="on">
-              Open Dialog
-            </v-btn>
-          </template>
           <v-card rounded="xl">
             <v-card-title class="mt-4 mb-2">
               <p style="float: left;">Please input your  4-digit code in your email.</p>
             </v-card-title>
-            <v-card-body>
-              <form @submit.prevent="signup">
+              <form @submit.prevent="submit">
                 <v-container>
                   <v-row class="mx-4">
                     <v-col cols="12">
@@ -23,46 +15,54 @@
                         inputColor="#012689"
                         fontColor="#2854CB"
                         :allowPaste="false"
-                        v-model="fullValue"
+                        v-model="otp"
                         />
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <v-btn color="primary" class="my-4" width="100%">
+                      <v-btn type="submit" @click="addNewPassword" color="primary" class="my-4" width="100%">
                         NEXT</v-btn
                       >
                     </v-col>
                   </v-row>
                   <v-row class="mx-4">
                     <v-col cols="12">
-                      <span color="primary" class="text-link"
+                      <span @click="otpKnowPassword" color="primary" class="text-link"
                         >Already know password?</span
                       >
                     </v-col>
                   </v-row>
                 </v-container>
               </form>
-            </v-card-body>
           </v-card>
-        </v-dialog>
       </v-row>
-    </v-app>
-  </div>
+    </v-container>
 </template>
 
 <script>
 import VueFakeInput from 'vue-fake-input';
 
 export default {
+ name: 'Send-Otp',
+ props: ['otpKnowPassword', 'addNewPassword'],
 components: {
     VueFakeInput
   },
   data: () => {
     return {
       dialog: false,
+      otp : "",
     };
   },
+  methods:
+  {
+     submit()
+     {
+        console.log(this.otp);
+        this.$store.commit('setOtp', this.otp);
+     }
+  }
 };
 </script>
 

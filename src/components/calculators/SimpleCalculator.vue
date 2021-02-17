@@ -92,7 +92,7 @@ export default {
         else this.operatorClicked(clicked);
       }
 
-      console.log(e.key);
+      // console.log(e.key);
     });
   },
 };
