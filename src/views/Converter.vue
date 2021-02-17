@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import SimpleCalculator from "../components/converter/SimpleCalculator.vue";
+import SimpleCalculator from "../components/converter/ConverterBase.vue";
 
 export default {
   components: { SimpleCalculator },
