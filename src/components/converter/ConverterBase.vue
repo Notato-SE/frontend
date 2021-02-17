@@ -1,7 +1,7 @@
 
 
 <template>
-  <v-container fluid style="margin-top: 132px; padding-bottom: 20px">
+  <v-container fluid style="margin-top: 100px; padding-bottom: 20px">
     <v-text-field v-if="loading" color="success" loading disabled>
     </v-text-field>
     <v-text-field v-else-if="errored" color="error" loading disabled>
