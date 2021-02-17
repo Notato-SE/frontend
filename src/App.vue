@@ -44,8 +44,9 @@ Vue.mixin({
         Accept: "application/json",
         "Access-Control-Allow-Origin": "https://calculator_api.blah",
       };
-      const res = await axios.post(this.api_url + endpoint, data, headers);
-      return res.data;
+      const res = await axios.post(endpoint, data, headers);
+
+      return res.data.data;
     },
   },
 });
