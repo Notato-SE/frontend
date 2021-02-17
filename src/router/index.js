@@ -26,44 +26,41 @@ const routes = [
     meta: {guest: true}
   },
   {
-    path: "/signup",
-    name: "SignUp",
-    component: () => 
-    import("../components/Auth/Signup.vue"),
-    meta: {guest: true}
+    path: "/converter",
+    name: "Converter",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Converter.vue"),
   },
   {
-    path: "/login",
-    name: "Login",
-    props: {
-      prop: {
-        type: Boolean,
-        default: true 
-      }
-    },
-    component: () => 
-    import("../components/Auth/Login.vue"),
-    meta: {guest: true}
-
+    path: "/custom-picker",
+    name: "Custom Picker",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/CustomPicker.vue"),
   },
   {
-    path: "/otpcode",
-    name: "OtpCode",
-    component: () => 
-    import("../components/Auth/SendOtpCode.vue"),
+    path: "/team-generator",
+    name: "Team Generator",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/TeamGenerator.vue"),
   },
   {
-    path: "/resetpassword",
-    name: "ResetPassword",
-    component: () => 
-    import("../components/Auth/ResetPassword.vue"),
+    path: "/randomizer",
+    name: "Randomizer",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Randomizer.vue"),
   },
-  {
-    path: "/forgot-password",
-    name: "OtpCode",
-    component: () => 
-    import("../components/Auth/ForgotPassword.vue"),
-  }
 ];
 
 const router = new VueRouter({

@@ -1,6 +1,13 @@
 module.exports = {
   transpileDependencies: ["vuetify"],
+  
   devServer: {
-    proxy: 'http://backend.test',
-   }
+    proxy: {
+      'http://converter.doxxie.live': {
+        target: 'http://converter.doxxie.live',
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  },
 };
