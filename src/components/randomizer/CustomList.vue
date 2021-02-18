@@ -4,12 +4,18 @@
       style="background-color: #d3d3d3; height: 100px"
       class="mt-5 d-flex align-center justify-center"
     >
-      <h1>{{ results }}</h1>
+      <h1>{{ form.results }}</h1>
     </div>
     <div class="d-flex justify-end">
-      <v-btn @click="save()" elevation="2" class="mt-2" :disabled="!results">
+      <v-btn
+        @click="dialog = true"
+        elevation="2"
+        class="mt-2"
+        :disabled="!form.results"
+      >
         Save
       </v-btn>
+      <SaveDialog :form="form" :dialog="dialog" :setDialog="setDialog" />
     </div>
     <div class="d-flex justify-start">
       <v-row>
@@ -48,44 +54,26 @@
       </v-row>
     </div>
     <div class="d-flex justify-start">
-      <v-btn @click="generate()" elevation="2" class="mt-2" color="primary">
+      <v-btn @click="random()" elevation="2" class="mt-2" color="primary">
         Generate
       </v-btn>
     </div>
   </div>
 </template>
 <script>
+import SaveDialog from "@/components/randomizer/SaveDialog.vue";
+import randomizerMixin from "@/components/randomizer/randomizerMixin";
+
 export default {
+  components: { SaveDialog },
+  mixins: [randomizerMixin],
   data: () => ({
-    tab: "",
     form: {
       random_type: 3,
       list_num: 1,
       duplicated: 0,
+      results: null,
     },
-    results: undefined,
   }),
-  methods: {
-    async save() {
-      if (this.form.results) {
-        await this.postAxios("/randomizer/save", this.form);
-      }
-    },
-    async generate() {
-      let data = await this.postAxios("/randomizer", this.form);
-
-      this.results = data.results;
-      this.form.results = data.results;
-    },
-  },
-  watch: {
-    "form.unorganized_inputs": {
-      handler(newValue) {
-        this.form.inputs = newValue.split("\n");
-
-        this.form.inputs = this.form.inputs.filter((e) => e !== "");
-      },
-    },
-  },
 };
 </script>
