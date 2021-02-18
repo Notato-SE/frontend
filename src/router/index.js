@@ -13,7 +13,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
-    meta: {guest: true}
+    meta: { guest: true },
   },
   {
     path: "/",
@@ -23,7 +23,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Calculator.vue"),
-    meta: {guest: true}
+    meta: { guest: true },
   },
   {
     path: "/converter",
@@ -61,6 +61,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Randomizer.vue"),
   },
+  {
+    path: "/info",
+    name: "Information",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Information.vue"),
+  },
 ];
 
 const router = new VueRouter({
@@ -70,16 +79,15 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters.isAuthenticated) {
-      next()
-      return
+      next();
+      return;
     }
-    next('/login')
+    next("/login");
   } else {
-    next()
+    next();
   }
 });
-
 
 export default router;

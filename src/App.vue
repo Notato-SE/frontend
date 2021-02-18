@@ -16,8 +16,8 @@
 <script>
 import Drawer from "./components/Drawer.vue";
 import NavBar from "./components/NavBar.vue";
+import helperMixins from "@/helpers/helper-mixins";
 import Vue from "vue";
-import axios from "axios";
 
 export default {
   components: {
@@ -29,27 +29,7 @@ export default {
   }),
 };
 
-Vue.mixin({
-  data: () => ({
-    // api_url: "https://notato.doxxie.live/v1",
-    api_url: "https://calculator_api.blah/v1",
-  }),
-  methods: {
-    async getAxios(endpoint) {
-      const res = await axios.get(this.api_url + endpoint);
-      return res.data;
-    },
-    async postAxios(endpoint, data) {
-      const headers = {
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "https://calculator_api.blah",
-      };
-      const res = await axios.post(endpoint, data, headers);
-
-      return res.data.data;
-    },
-  },
-});
+Vue.mixin(helperMixins);
 </script>
 
 <style lang="scss">
