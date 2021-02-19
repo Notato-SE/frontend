@@ -33,18 +33,17 @@ export default function ScientificCalculator(math) {
       if (this.currVal === "-" || this.currVal === "") this.currVal = "";
     },
     setCurrVal(str) {
-      this.afterReset();
-
+      this.justReset = false;
       this.currVal = str;
     },
     action(str) {
       console.log({ reset: this.justReset });
 
-      if (this.justReset) {
-        this.reset();
-        this.currVal = "";
-        this.history = "";
-      }
+      // if (this.justReset) {
+      //   this.reset();
+      //   this.currVal = "";
+      //   this.history = "";
+      // }
 
       this.afterReset();
 
@@ -78,8 +77,8 @@ export default function ScientificCalculator(math) {
           localStorage.setItem(
             "mem",
             str === "M+"
-              ? parseFloat(mem) + parseFloat(this.calculate())
-              : parseFloat(mem) - parseFloat(this.calculate())
+              ? parseFloat(mem) + parseFloat(this.currVal)
+              : parseFloat(mem) - parseFloat(this.currVal)
           );
           break;
         case "MRC":
@@ -96,18 +95,13 @@ export default function ScientificCalculator(math) {
       this.checkAndFormatCurrVal();
     },
     calculate() {
-      console.log({
-        a: document.getElementById("mathfield").getValue("ASCIIMath"),
-      });
+      console.log(this.history);
 
-      if (this.currVal === "") return "0";
-
+      this.justReset = true;
       try {
         console.log({
           currVal: this.currVal,
-          dis: this.displayToFormula(
-            document.getElementById("mathfield").getValue("ASCIIMath")
-          ),
+          dis: this.displayToFormula(this.currVal),
         });
         return math.evaluate(this.displayToFormula(this.currVal)).toString();
       } catch (_) {
@@ -115,6 +109,7 @@ export default function ScientificCalculator(math) {
       }
     },
     reset() {
+      this.op = "";
       this.justReset = true;
     },
     afterReset() {
@@ -123,13 +118,33 @@ export default function ScientificCalculator(math) {
         this.justReset = false;
       }
     },
+    handleSpecialOp(op) {
+      if (this.currVal === "Division by zero") {
+        this.reset();
+        return true;
+      }
+
+      if (op === "√") {
+        this.history = "√" + this.currVal;
+        this.currVal = Math.sqrt(this.currVal);
+        return true;
+      } else if (op === "x^2") {
+        this.history = this.currVal + " ^ 2";
+        this.currVal = Math.pow(this.currVal, 2);
+        return true;
+      } else if (op === "1/x") {
+        this.history = "1 / " + this.currVal;
+        this.currVal = 1 / this.currVal;
+        return true;
+      }
+
+      return false;
+    },
     displayToFormula(val) {
       return val
         .replace("\\", "")
         .replace("log(", "log10(")
         .replace("ln(", "log(")
-        .replace(/sqrt\[(.*?)+\]\{(.*?)\}/i, "nthRoot($2, $1)")
-        .replace(/sqrt\[\]\{(.*?)\}/i, "sqrt($1)")
         .replace(/sin\((.*?)\)/i, "sin($1 " + (this.deg ? "deg" : "rad") + ")")
         .replace(
           /sin\^{-1}\((.*?)\)/i,
