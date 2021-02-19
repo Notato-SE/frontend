@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div
-      style="background-color: #d3d3d3; height: 100px"
-      class="mt-5 d-flex align-center justify-center"
-    >
-      <h1>{{ form.results }}</h1>
-    </div>
+    <Result :results="form.results" :random_type="form.random_type" />
+
     <div class="d-flex justify-end">
       <v-btn
         @click="dialog = true"
@@ -40,10 +36,11 @@
 </template>
 <script>
 import SaveDialog from "@/components/randomizer/SaveDialog.vue";
+import Result from "@/components/randomizer/Result.vue";
 import randomizerMixin from "@/components/randomizer/randomizerMixin";
 
 export default {
-  components: { SaveDialog },
+  components: { SaveDialog, Result },
   mixins: [randomizerMixin],
   data: () => ({
     form: {

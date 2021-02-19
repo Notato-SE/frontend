@@ -13,9 +13,9 @@
           <v-tab> Team Generator </v-tab>
 
           <v-tabs-items v-model="tab">
-            <v-tab-item> <CustomList /> </v-tab-item>
-            <v-tab-item> <Picker /> </v-tab-item>
-            <v-tab-item> <TeamGenerator /> </v-tab-item>
+            <v-tab-item> <CustomList :formData="form[3]" /> </v-tab-item>
+            <v-tab-item> <Picker :formData="form[1]" /> </v-tab-item>
+            <v-tab-item> <TeamGenerator :formData="form[2]" /> </v-tab-item>
           </v-tabs-items>
         </v-tabs>
       </div>
@@ -37,7 +37,26 @@ export default {
   },
   data: () => ({
     tab: "",
+    form: {
+      1: null,
+      2: null,
+      3: null,
+    },
+    tabMap: {
+      1: 1,
+      2: 2,
+      3: 0,
+    },
   }),
+  async beforeMount() {
+    let id = this.$route.query.id;
+    if (id) {
+      let data = await this.getAxios(`/randomizer/${id}`);
+      this.tab = this.tabMap[data.random_type];
+
+      this.form[data.random_type] = data;
+    }
+  },
 };
 </script>
  

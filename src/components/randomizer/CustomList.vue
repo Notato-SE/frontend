@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div
-      style="background-color: #d3d3d3; height: 100px"
-      class="mt-5 d-flex align-center justify-center"
-    >
-      <h1>{{ form.results }}</h1>
-    </div>
+    <Result :results="form.results" :random_type="form.random_type" />
+
     <div class="d-flex justify-end">
       <v-btn
         @click="dialog = true"
@@ -17,6 +13,7 @@
       </v-btn>
       <SaveDialog :form="form" :dialog="dialog" :setDialog="setDialog" />
     </div>
+
     <div class="d-flex justify-start">
       <v-row>
         <v-col cols="12">
@@ -43,8 +40,8 @@
             <v-col cols="3">
               <v-checkbox
                 v-model="form.duplicated"
-                true-value="1"
-                false-value="0"
+                :true-value="1"
+                :false-value="0"
                 label="Allows Duplicate"
                 class="mt-9"
               ></v-checkbox>
@@ -53,6 +50,7 @@
         </v-col>
       </v-row>
     </div>
+
     <div class="d-flex justify-start">
       <v-btn @click="random()" elevation="2" class="mt-2" color="primary">
         Generate
@@ -62,10 +60,11 @@
 </template>
 <script>
 import SaveDialog from "@/components/randomizer/SaveDialog.vue";
+import Result from "@/components/randomizer/Result.vue";
 import randomizerMixin from "@/components/randomizer/randomizerMixin";
 
 export default {
-  components: { SaveDialog },
+  components: { SaveDialog, Result },
   mixins: [randomizerMixin],
   data: () => ({
     form: {

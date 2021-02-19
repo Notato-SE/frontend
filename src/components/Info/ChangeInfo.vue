@@ -23,6 +23,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data: () => ({
@@ -38,7 +39,7 @@ export default {
       await this.fetchData();
     },
     async fetchData() {
-      this.form = (await this.getAxios("/profile")).data;
+      this.form = await this.getAxios("/profile");
     },
   },
 };
