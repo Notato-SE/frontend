@@ -40,6 +40,13 @@ export default {
         icon: "mdi-heart",
         path: "/randomizer",
       },
+      {
+        active: false,
+        exact: true,
+        title: "Information",
+        icon: "mdi-heart",
+        path: "/info",
+      },
     ],
   }),
   watch: {
