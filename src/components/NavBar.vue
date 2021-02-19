@@ -12,15 +12,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+       <v-text font="bold">Hi</v-text>
        <v-btn @click="logOut" color="primary">
           Log Out
       </v-btn>
@@ -58,6 +50,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import Vue from "vue";
 
 import Login from './Auth/Login.vue';
 import ResetPassword from './Auth/ResetPassword.vue';
@@ -100,7 +93,15 @@ export default {
         path: "/randomizer",
       },
     ],
-  }),
+  }), 
+  watch: {
+    '$route.query': {
+      deep:true, 
+      handler(newValue, oldValue) {
+      if (newValue.login == 1) this.login_dialog =true
+      }
+    } 
+  },
   methods: {
     ...mapActions(['logout']),
     update() {
@@ -120,10 +121,14 @@ export default {
     {
       this.signup_dialog = true;
     },
-    forgotClicked(v) {
-      console.log(v);
+    forgotClicked() {
       this.forgot_dialog = true;
       this.login_dialog= false;
+      Vue.toast.success({
+    title:'Hello Sovath',
+    message:'Success'
+})
+      console.log("he;");
     },
     knowPassword()
     {

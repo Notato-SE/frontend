@@ -11,6 +11,25 @@
 <script>
 export default {
     name: 'Alert',
-    props: ['success', 'error', 'message']
+    data: () => {
+      return {
+         success: false,
+         error: false
+      }
+    },
+    props: ['message'],
+    methods: 
+    {
+      alertSuccess()
+      {
+        this.success = true;
+        this.error = false;
+      },
+      alertError()
+      {
+        this.error = true;
+        this.success = false;
+      }
+    }
 }
 </script>

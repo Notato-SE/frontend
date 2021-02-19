@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <Alert :message="message" :error="error" :success="success"></Alert>
     <v-row justify="center">
       <v-card rounded="xl">
         <v-card-title class="mt-4 mb-2">
@@ -58,11 +57,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import Alert from "../Alert.vue";
 export default {
   name: "forgot-password",
   props: ["backToLogin"],
-  components: { Alert },
   data: () => {
     return {
       isValid: true,

@@ -1,7 +1,6 @@
 <template>
-
+    
     <v-container>
-      <Alert :message="message" :error="error" :success="success"></Alert>
       <v-row justify="center">
          <!-- <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
@@ -87,11 +86,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import Alert from '../Alert.vue';
 
 export default {
   name: 'login',
-  components: { Alert },
   props: ['forgotClicked', 'knowPassword'],
   data: () => {
     return {
@@ -120,16 +117,12 @@ export default {
     {
       try{
        var resp = await this.login(this.user);
-       this.success = true;
-       this.error = false;
        this.message = resp.data.message;
       }
       catch
       {
         const err =  this.$store.getters.stateErrors;
         this.message = err.message;
-        this.success = false;
-        this.error = true;
       }
       this.dialog = false;
     }

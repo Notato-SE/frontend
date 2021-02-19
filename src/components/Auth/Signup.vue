@@ -1,6 +1,5 @@
 <template>
   <v-container>
-      <Alert :message="message" :error="error" :success="success"></Alert>
       <v-row justify="center">
         <!-- <v-dialog v-model="dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
@@ -103,12 +102,10 @@
 
 <script>
 import { mapActions } from "vuex";
-import Alert from '../Alert.vue';
 
 export default {
   name: 'signup',
   props: ['haveAccount'],
-  components: { Alert },
   data: () => {
     return {
       dialog: true,
@@ -126,10 +123,7 @@ export default {
       passwordRules: [
         (v) => !!v || "Password is required",
         (v) => (v && v.length >= 5) || "Password must have 5+ characters",
-      ],
-      success: false,
-      error: false,
-      message: null
+      ]
     };
   },
   methods: {
@@ -145,9 +139,7 @@ export default {
       catch
       {
         const err =  this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
+       
       }
       this.dialog = false;
      
