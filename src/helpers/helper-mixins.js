@@ -39,20 +39,18 @@ export default {
         .get(endpoint)
         .catch((error) => (message = error.response?.data?.message));
 
-      if (showAlert) {
-        if (message) {
-          EventBus.$emit("SET_ALERT", {
-            type: "error",
-            show: true,
-            message,
-          });
-        } else {
-          EventBus.$emit("SET_ALERT", {
-            type: "success",
-            show: true,
-            message: res?.data?.message,
-          });
-        }
+      if (message) {
+        EventBus.$emit("SET_ALERT", {
+          type: "error",
+          show: true,
+          message,
+        });
+      } else if (showAlert) {
+        EventBus.$emit("SET_ALERT", {
+          type: "success",
+          show: true,
+          message: res?.data?.message,
+        });
       }
       return res?.data?.data;
     },
@@ -62,20 +60,18 @@ export default {
         (error) => (message = error.response?.data?.message)
       );
 
-      if (showAlert) {
-        if (message) {
-          EventBus.$emit("SET_ALERT", {
-            type: "error",
-            show: true,
-            message,
-          });
-        } else {
-          EventBus.$emit("SET_ALERT", {
-            type: "success",
-            show: true,
-            message: res?.data?.message,
-          });
-        }
+      if (message) {
+        EventBus.$emit("SET_ALERT", {
+          type: "error",
+          show: true,
+          message,
+        });
+      } else if (showAlert) {
+        EventBus.$emit("SET_ALERT", {
+          type: "success",
+          show: true,
+          message: res?.data?.message,
+        });
       }
 
       return res?.data?.data;

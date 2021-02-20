@@ -1,7 +1,12 @@
 <template>
   <div>
-    <v-row>
-      <v-col cols="12" v-for="data in datas" :key="data.id">
+    <v-row class="pa-6">
+      <v-col
+        cols="12"
+        v-for="data in datas"
+        :key="data.id"
+        class="border border-dark ma-1"
+      >
         <v-row>
           <v-col cols="5">
             <h2>
@@ -19,7 +24,8 @@
           <v-col cols="4" class="d-flex align-center justify-center">
             <v-btn
               v-if="data.random_type !== 1"
-              elevation="1"
+              text
+              color="primary"
               :loading="data.loading.downloadExcel"
               @click="downloadExcel(data)"
               >Download Excel</v-btn
