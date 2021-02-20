@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    
+
     <v-main>
       <notifications group="foo" position="bottom center"/>
       <drawer></drawer>
@@ -18,7 +18,9 @@
 import Drawer from "./components/Drawer.vue";
 import NavBar from "./components/NavBar.vue";
 import helperMixins from "@/helpers/helper-mixins";
+import Alert from "@/helpers/Alert.vue";
 import Vue from "vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -31,8 +33,9 @@ export default {
 };
 
 Vue.mixin(helperMixins);
+Vue.component("Alert", Alert);
 
-
+Vue.prototype.$axios = axios;
 </script>
 
 <style lang="scss">

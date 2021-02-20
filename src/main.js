@@ -6,12 +6,10 @@ import store from "./store/index";
 import axios from "axios";
 import Notifications from 'vue-notification'
 
-
-
 import "@/assets/css/main.css";
 
 //axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "https://backend.test/v1";
+axios.defaults.baseURL = "https://calculator_api.blah/v1";
 Vue.prototype.$http = axios;
 
 const token = localStorage.getItem("token");

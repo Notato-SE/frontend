@@ -33,13 +33,14 @@ export default {
       };
     },
     async getAxios(endpoint) {
-      const res = await axios.get(endpoint, this.getHeader());
-      return res.data;
+      const res = await axios.get(endpoint);
+      return res?.data?.data;
     },
     async postAxios(endpoint, data, method = "post") {
-      const res = await axios[method](endpoint, data, this.getHeader());
-
+      const res = await axios[method](endpoint, data);
       return res?.data?.data;
+      // try {
+      // } catch (error) {}
     },
   },
 };

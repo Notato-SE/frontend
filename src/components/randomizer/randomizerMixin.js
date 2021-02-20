@@ -11,6 +11,9 @@ export default {
       this.form.results = data.results;
     },
   },
+  props: {
+    formData: Object,
+  },
   data: () => ({
     dialog: false,
   }),
@@ -20,6 +23,16 @@ export default {
         this.form.inputs = newValue.split("\n");
 
         this.form.inputs = this.form.inputs.filter((e) => e !== "");
+      },
+    },
+    formData: {
+      immediate: true,
+      handler(newValue) {
+        if (!newValue) return;
+
+        this.form = newValue.inputs;
+        this.form = { ...this.form, ...newValue };
+        this.form.unorganized_inputs = this.form.inputs.inputs.join("\n");
       },
     },
   },

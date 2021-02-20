@@ -41,33 +41,54 @@
         <v-row>
           <v-col
             cols="12"
-            class="d-flex justify-center"
             style="text-align: start"
+            class="d-flex justify-center"
           >
-            <p>Inputs:</p>
-            <div
-              style="background-color: #d3d3d3; height: 100px; width: 70%"
-              class="mt-5 d-flex align-center justify-center"
-            >
-              <h1>{{ curData.inputs.inputs }}</h1>
+            <div class="d-flex flex-column justify-center" style="width: 70%">
+              <p class="mb-n5">Inputs:</p>
+              <div
+                style="
+                  background-color: #d3d3d3;
+                  height: 150px;
+                  overflow: scroll;
+                "
+                class="mt-5 d-flex flex-column align-center justify-center"
+              >
+                <h1
+                  v-for="(each, k) in curData.inputs.inputs"
+                  :key="k"
+                  class="ma-0"
+                >
+                  {{ each }}
+                </h1>
+              </div>
             </div>
           </v-col>
           <v-col
             cols="12"
-            class="d-flex justify-center"
             style="text-align: start"
+            class="d-flex justify-center"
           >
-            <p>Results:</p>
-            <div
-              style="background-color: #d3d3d3; height: 100px; width: 70%"
-              class="mt-5 d-flex align-center justify-center"
-            >
-              <h1>{{ curData.results }}</h1>
+            <div class="d-flex flex-column justify-center" style="width: 70%">
+              <p class="mb-n5">Results:</p>
+              <div>
+                <Result
+                  :results="curData.results"
+                  :random_type="curData.random_type"
+                />
+              </div>
             </div>
           </v-col>
         </v-row>
 
-        <br />
+        <v-card-actions class="d-flex justify-end mt-2">
+          <v-btn
+            color="primary"
+            @click="$router.push(`randomizer?id=${curData.id}`)"
+          >
+            Revise
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -75,8 +96,10 @@
 
 <script>
 import axios from "axios";
+import Result from "@/components/randomizer/Result.vue";
 
 export default {
+  components: { Result },
   data: () => ({
     datas: {},
     dialog: false,
@@ -107,7 +130,7 @@ export default {
     },
   },
   async beforeMount() {
-    this.datas = (await this.getAxios("/randomizer/me")).data;
+    this.datas = await this.getAxios("/randomizer/me");
 
     this.datas = this.datas.map((e) => {
       return {

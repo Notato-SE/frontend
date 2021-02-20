@@ -24,31 +24,54 @@
         </v-menu>
       </span>
       <span v-else>
-         <v-dialog v-model="signup_dialog" max-width="450px">
+        <v-dialog v-model="signup_dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn depressed class="signup text-dark authenticated-btn" @click="signup" v-bind="attrs" v-on="on">
-               SignUp
+            <v-btn
+              depressed
+              class="signup text-dark authenticated-btn"
+              @click="signup"
+              v-bind="attrs"
+              v-on="on"
+            >
+              SignUp
             </v-btn>
           </template>
-             <signup :haveAccount="haveAccount"></signup>
-         </v-dialog>
-         <v-dialog v-model="login_dialog" max-width="450px">
+          <signup :haveAccount="haveAccount"></signup>
+        </v-dialog>
+        <v-dialog v-model="login_dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn  class="authenticated-btn" @click="login" color="primary" dark v-bind="attrs" v-on="on">
-               Login
+            <v-btn
+              class="authenticated-btn"
+              @click="login"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              Login
             </v-btn>
           </template>
-           <login :forgotClicked="forgotClicked" :knowPassword="knowPassword"></login>
-         </v-dialog>
-         <v-dialog v-model="forgot_dialog" max-width="450px">
-                <reset-password @validEmail="sendOtp" :knowPassword="knowPassword"></reset-password>
-          </v-dialog>
-         <v-dialog v-model="sent_otp" max-width="450px">
-                <send-otp-code :otpKnowPassword="otpKnowPassword" :addNewPassword="addNewPassword" ></send-otp-code>>
-         </v-dialog>
-         <v-dialog v-model="add_new_password" max-width="450px">
-                <forgot-password :backToLogin="backToLogin" @confirmPassword="confirmPassword"></forgot-password>
-         </v-dialog>
+          <login :forgotClicked="forgotClicked"></login>
+        </v-dialog>
+        <v-dialog v-model="forgot_dialog" max-width="450px">
+          <reset-password
+            @validEmail="sendOtp"
+            :knowPassword="knowPassword"
+          ></reset-password>
+        </v-dialog>
+        <v-dialog v-model="sent_otp" max-width="450px">
+          <send-otp-code
+            :otpKnowPassword="otpKnowPassword"
+            :addNewPassword="addNewPassword"
+          ></send-otp-code
+          >>
+        </v-dialog>
+        <v-dialog v-model="add_new_password" max-width="450px">
+          <forgot-password
+            :backToLogin="backToLogin"
+            @confirmPassword="confirmPassword"
+          ></forgot-password>
+        </v-dialog>
       </span>
     </v-app-bar>
   </nav>
@@ -58,15 +81,15 @@
 import { mapActions } from "vuex";
 import Vue from "vue";
 
-import Login from './Auth/Login.vue';
-import ResetPassword from './Auth/ResetPassword.vue';
-import Signup from './Auth/Signup.vue';
-import SendOtpCode from './Auth/SendOtpCode.vue';
-import ForgotPassword from './Auth/ForgotPassword.vue';
+import Login from "./Auth/Login.vue";
+import ResetPassword from "./Auth/ResetPassword.vue";
+import Signup from "./Auth/Signup.vue";
+import SendOtpCode from "./Auth/SendOtpCode.vue";
+import ForgotPassword from "./Auth/ForgotPassword.vue";
 
 export default {
-  components: { Login, Signup, ResetPassword, SendOtpCode, ForgotPassword},
-  emits: ['update-dialog'],
+  components: { Login, Signup, ResetPassword, SendOtpCode, ForgotPassword },
+  emits: ["update-dialog"],
   data: () => ({
     drawer: false,
     signup_dialog: false,
@@ -100,88 +123,74 @@ export default {
         path: "/randomizer",
       },
     ],
-  }), 
+  }),
   watch: {
-    '$route.query': {
-      deep:true, 
+    "$route.query": {
+      deep: true,
       handler(newValue, oldValue) {
-      if (newValue.login == 1) this.login_dialog =true
-      }
-    } 
+        if (newValue.login == 1) this.login_dialog = true;
+      },
+    },
   },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(["logout"]),
     update() {
       this.drawer = !this.drawer;
       this.$store.commit("updateDrawer", this.drawer);
       console.log("drawer clicked " + this.drawer);
     },
-    async logOut(){
-      console.log(this.$store.getters.token)
-       await this.logout();
+    async logOut() {
+      console.log(this.$store.getters.token);
+      await this.logout();
     },
-    login()
-    {
+    login() {
       this.login_dialog = true;
     },
-    signup()
-    {
+    signup() {
       this.signup_dialog = true;
     },
     forgotClicked() {
       this.forgot_dialog = true;
       this.login_dialog= false;
     },
-    knowPassword()
-    {
-       this.forgot_dialog = false;
-       this.login_dialog= true;
+    knowPassword() {
+      this.forgot_dialog = false;
+      this.login_dialog = true;
     },
-    backToLogin()
-    {
-       this.add_new_password = false;
-       this.login_dialog= true;
+    backToLogin() {
+      this.add_new_password = false;
+      this.login_dialog = true;
     },
-    haveAccount()
-    {
+    haveAccount() {
       this.login_dialog = true;
       this.signup_dialog = false;
     },
-    sendOtp(param)
-    {
+    sendOtp(param) {
       console.log(param);
-      if(param)
-      {
+      if (param) {
         this.forgot_dialog = false;
         this.sent_otp = true;
-      }
-      else{
+      } else {
         this.forgot_dialog = true;
       }
-      
     },
-    otpKnowPassword()
-    {
-       this.login_dialog = true;
-       this.sent_otp = false;
+    otpKnowPassword() {
+      this.login_dialog = true;
+      this.sent_otp = false;
     },
-    addNewPassword()
-    {
+    addNewPassword() {
       this.sent_otp = false;
       this.add_new_password = true;
     },
-    confirmPassword(param)
-    {
-      if(param)
-      {
-        this.signup_dialog = false
-        this.parent_dialog = false
-        this.login_dialog = false
-        this.forgot_dialog = false
-        this.collapseOnScroll = false
-        this.add_new_password= false
-      }
-      else{
+    confirmPassword(param) {
+      if (param) {
+        this.signup_dialog = false;
+        this.parent_dialog = false;
+        this.login_dialog = false;
+        this.forgot_dialog = false;
+        this.collapseOnScroll = false;
+        this.add_new_password = false;
+      } else {
         this.add_new_password = true;
       }
     },
@@ -193,8 +202,7 @@ export default {
     }
   },
   computed: {
-    isLoggedIn: function()
-    {
+    isLoggedIn: function () {
       return this.$store.getters.isAuthenticated;
     }
   },
@@ -207,16 +215,15 @@ export default {
 };
 </script>
 <style lang="scss">
- .authenticated-btn{
-   margin-left: 30px;
- }
- .signup
- {
-   text-decoration: none;
-   font-weight: 600;
- }
- .login{
-   text-decoration: none;
-   font-weight: 600;
- }
+.authenticated-btn {
+  margin-left: 30px;
+}
+.signup {
+  text-decoration: none;
+  font-weight: 600;
+}
+.login {
+  text-decoration: none;
+  font-weight: 600;
+}
 </style>

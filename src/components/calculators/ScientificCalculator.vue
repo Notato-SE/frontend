@@ -1,100 +1,257 @@
 <template>
-  <v-container fluid class="d-flex justify-center my-5">
-    <div class="calculator">
-      <math-field class="display" id="history" key="history">
-        {{ cal.history }}
-      </math-field>
-      <div class="answer d-flex flex-wrap justify-end">
+  <div class="d-flex justify-center m-2">
+    <v-container
+      fluid
+      class="d-flex flex-column justify-center my-5 sheet"
+      style="width: 540px"
+    >
+      <v-row class="ml-5 mr-7 my-0 py-0">
         <math-field
-          class="text-right"
-          style="
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            word-break: break-all;
-            width: 100%;
-          "
-          id="mathfield"
-          @input="mathFieldChange"
-          >{{ cal.currVal }}</math-field
+          class="display d-flex flex-wrap justify-left"
+          id="history"
+          key="history"
         >
-      </div>
-      <div @click="cal.deg = !cal.deg" class="btn operator">
-        <span v-if="cal.deg">Deg</span>
-        <span v-else>Rad</span>
-      </div>
-      <div @click="appendVal('!')" class="btn operator">x!</div>
-      <div @click="appendVal('MRC')" class="btn operator">1/x</div>
-      <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
-      <div @click="actionClicked('M+')" class="btn operator">M+</div>
-      <div @click="actionClicked('M-')" class="btn operator">M-</div>
-      <div @click="actionClicked('+/-')" class="btn operator">+/-</div>
+          {{ cal.history }}
+        </math-field>
+        <div class="answer d-flex flex-wrap justify-end">
+          <math-field
+            class="text-right"
+            style="
+              overflow-wrap: break-word;
+              word-wrap: break-word;
+              word-break: break-all;
+              width: 100%;
+            "
+            id="mathfield"
+            @input="mathFieldChange"
+            :config="{ smartFence: false }"
+            >{{ cal.currVal }}</math-field
+          >
+        </div>
+      </v-row>
 
-      <div @click="appendVal('(')" class="btn operator">(</div>
-      <div @click="appendVal(')')" class="btn operator">)</div>
-      <div @click="appendVal('%')" class="btn operator">%</div>
-      <div @click="actionClicked('AC')" class="btn operator">AC</div>
-      <div @click="actionClicked('CE')" class="btn operator">CE</div>
-      <div @click="actionClicked('C')" class="btn operator">Del</div>
-      <div @click="appendVal('/')" class="btn operator">/</div>
+      <div v-if="windowWidth > 550" class="calculator">
+        <div @click="cal.deg = !cal.deg" class="btn operator">
+          <span v-if="cal.deg">Deg</span>
+          <span v-else>Rad</span>
+        </div>
+        <div @click="appendVal('!')" class="btn operator">x!</div>
+        <div @click="appendVal('1/')" class="btn operator">1/x</div>
+        <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
+        <div @click="actionClicked('M+')" class="btn operator">M+</div>
+        <div @click="actionClicked('M-')" class="btn operator">M-</div>
+        <div @click="actionClicked('+/-')" class="btn operator">+/-</div>
 
-      <div @click="appendVal('\\sqrt[]{}')" class="btn operator">
-        <sup>y</sup>√<sub>x</sub>
-      </div>
-      <div @click="appendVal('\\sqrt[2]{')" class="btn operator">√</div>
-      <div @click="appendVal('^')" class="btn operator">x<sup>y</sup></div>
-      <div @click="appendVal('7')" class="btn">7</div>
-      <div @click="appendVal('8')" class="btn">8</div>
-      <div @click="appendVal('9')" class="btn">9</div>
-      <div @click="appendVal('*')" id="times" class="btn operator">x</div>
+        <div @click="appendVal('(')" class="btn operator">(</div>
+        <div @click="appendVal(')')" class="btn operator">)</div>
+        <div @click="appendVal('%')" class="btn operator">%</div>
+        <div @click="actionClicked('AC')" class="btn operator">AC</div>
+        <div @click="actionClicked('CE')" class="btn operator">CE</div>
+        <div @click="actionClicked('C')" class="btn operator">Del</div>
+        <div @click="appendVal('/')" class="btn operator">/</div>
 
-      <div @click="appendVal('\\pi')" class="btn operator">π</div>
-      <div @click="appendVal('e^')" class="btn operator">e<sup>x</sup></div>
-      <div @click="appendVal('^2')" class="btn operator">x<sup>2</sup></div>
-      <div @click="appendVal('4')" class="btn">4</div>
-      <div @click="appendVal('5')" class="btn">5</div>
-      <div @click="appendVal('6')" class="btn">6</div>
-      <div @click="appendVal('-')" id="minus" class="btn operator">-</div>
+        <div @click="appendVal('\\sqrt[]{}')" class="btn operator">
+          <sup>y</sup>√<sub>x</sub>
+        </div>
+        <div @click="appendVal('\\sqrt[2]{')" class="btn operator">√</div>
+        <div @click="appendVal('^')" class="btn operator">x<sup>y</sup></div>
+        <div @click="appendVal('7')" class="btn">7</div>
+        <div @click="appendVal('8')" class="btn">8</div>
+        <div @click="appendVal('9')" class="btn">9</div>
+        <div @click="appendVal('*')" id="times" class="btn operator">x</div>
 
-      <div
-        @click="appendVal(first ? 'sin(' : 'sin^{-1}(')"
-        class="btn operator"
-      >
-        <span v-if="first">sin</span>
-        <span v-else>sin<sup>-1</sup></span>
-      </div>
-      <div
-        @click="appendVal(first ? 'cos()' : 'cos^{-1}(')"
-        class="btn operator"
-      >
-        <span v-if="first">cos</span>
-        <span v-else>cos<sup>-1</sup></span>
-      </div>
-      <div
-        @click="appendVal(first ? 'tan()' : 'tan^{-1}(')"
-        class="btn operator"
-      >
-        <span v-if="first">tan</span>
-        <span v-else>tan<sup>-1</sup></span>
-      </div>
-      <div @click="appendVal('1')" class="btn">1</div>
-      <div @click="appendVal('2')" class="btn">2</div>
-      <div @click="appendVal('3')" class="btn">3</div>
-      <div @click="appendVal('+')" class="btn operator">+</div>
+        <div @click="appendVal('\\pi')" class="btn operator">π</div>
+        <div @click="appendVal('e^')" class="btn operator">e<sup>x</sup></div>
+        <div @click="appendVal('^2')" class="btn operator">x<sup>2</sup></div>
+        <div @click="appendVal('4')" class="btn">4</div>
+        <div @click="appendVal('5')" class="btn">5</div>
+        <div @click="appendVal('6')" class="btn">6</div>
+        <div @click="appendVal('-')" id="minus" class="btn operator">-</div>
 
-      <div @click="first = !first" class="btn operator">1st</div>
-      <div @click="appendVal('ln()')" class="btn operator">Ln</div>
-      <div @click="appendVal('log()')" class="btn operator">Log</div>
-      <div @click="appendVal('0')" class="btn">0</div>
-      <div @click="appendVal('00')" class="btn">00</div>
-      <div @click="appendVal('.')" class="btn">.</div>
-      <div @click="actionClicked('=')" class="btn operator">=</div>
-    </div>
-  </v-container>
+        <div
+          @click="appendVal(first ? 'sin(' : 'sin^{-1}(')"
+          class="btn operator"
+        >
+          <span v-if="first">sin</span>
+          <span v-else>sin<sup>-1</sup></span>
+        </div>
+        <div
+          @click="appendVal(first ? 'cos()' : 'cos^{-1}(')"
+          class="btn operator"
+        >
+          <span v-if="first">cos</span>
+          <span v-else>cos<sup>-1</sup></span>
+        </div>
+        <div
+          @click="appendVal(first ? 'tan()' : 'tan^{-1}(')"
+          class="btn operator"
+        >
+          <span v-if="first">tan</span>
+          <span v-else>tan<sup>-1</sup></span>
+        </div>
+        <div @click="appendVal('1')" class="btn">1</div>
+        <div @click="appendVal('2')" class="btn">2</div>
+        <div @click="appendVal('3')" class="btn">3</div>
+        <div @click="appendVal('+')" class="btn operator">+</div>
+
+        <div @click="first = !first" class="btn operator">1st</div>
+        <div @click="appendVal('\\ln()')" class="btn operator">Ln</div>
+        <div @click="appendVal('\\log()')" class="btn operator">Log</div>
+        <div @click="appendVal('0')" class="btn">0</div>
+        <div @click="appendVal('00')" class="btn">00</div>
+        <div @click="appendVal('.')" class="btn">.</div>
+        <div @click="actionClicked('=')" class="btn operator">=</div>
+      </div>
+      <template v-else>
+        <div>
+          <v-carousel
+            height="100%"
+            class="m-2 p-2 d-flex justify-center"
+            :show-arrows="false"
+            hide-delimiter-background
+            v-model="tab"
+          >
+            <v-carousel-item key="scientific">
+              <v-row>
+                <v-col cols="11" class="calculator-3" style="width: 340px">
+                  <div @click="cal.deg = !cal.deg" class="btn operator">
+                    <span v-if="cal.deg">Deg</span>
+                    <span v-else>Rad</span>
+                  </div>
+                  <div @click="appendVal('!')" class="btn operator">x!</div>
+                  <div @click="appendVal('\\frac{1}{}')" class="btn operator">
+                    1/x
+                  </div>
+
+                  <div @click="appendVal('(')" class="btn operator">(</div>
+                  <div @click="appendVal(')')" class="btn operator">)</div>
+                  <div @click="appendVal('%')" class="btn operator">%</div>
+
+                  <div @click="appendVal('\\sqrt[]{}')" class="btn operator">
+                    <sup>y</sup>√<sub>x</sub>
+                  </div>
+                  <div @click="appendVal('\\sqrt[2]{')" class="btn operator">
+                    √
+                  </div>
+                  <div @click="appendVal('^')" class="btn operator">
+                    x<sup>y</sup>
+                  </div>
+
+                  <div @click="appendVal('\\pi')" class="btn operator">π</div>
+                  <div @click="appendVal('e^')" class="btn operator">
+                    e<sup>x</sup>
+                  </div>
+                  <div @click="appendVal('^2')" class="btn operator">
+                    x<sup>2</sup>
+                  </div>
+
+                  <div
+                    @click="appendVal(cal.first ? 'sin(' : 'sin^{-1}(')"
+                    class="btn operator"
+                  >
+                    <span v-if="cal.first">sin</span>
+                    <span v-else>sin<sup>-1</sup></span>
+                  </div>
+                  <div
+                    @click="appendVal(cal.first ? 'cos()' : 'cos^{-1}(')"
+                    class="btn operator"
+                  >
+                    <span v-if="cal.first">cos</span>
+                    <span v-else>cos<sup>-1</sup></span>
+                  </div>
+                  <div
+                    @click="appendVal(cal.first ? 'tan()' : 'tan^{-1}(')"
+                    class="btn operator"
+                  >
+                    <span v-if="cal.first">tan</span>
+                    <span v-else>tan<sup>-1</sup></span>
+                  </div>
+
+                  <div @click="cal.first = !cal.first" class="btn operator">
+                    1st
+                  </div>
+                  <div @click="appendVal('\\ln()')" class="btn operator">
+                    Ln
+                  </div>
+                  <div @click="appendVal('\\log()')" class="btn operator">
+                    Log
+                  </div>
+                </v-col>
+                <v-col cols="1"
+                  ><div
+                    style="
+                      height: 400px;
+                      width: 20px;
+                      background-color: #d9efff;
+                    "
+                  ></div
+                ></v-col>
+              </v-row>
+            </v-carousel-item>
+            <v-carousel-item key="simple">
+              <v-row>
+                <v-col cols="1" class="align-center">
+                  <div
+                    style="height: 100%; width: 20px; background-color: #d9efff"
+                  ></div>
+                </v-col>
+
+                <v-col cols="11" class="calculator align-right">
+                  <div @click="actionClicked('MRC')" class="btn operator">
+                    MRC
+                  </div>
+                  <div @click="actionClicked('M+')" class="btn operator">
+                    M+
+                  </div>
+                  <div @click="actionClicked('M-')" class="btn operator">
+                    M-
+                  </div>
+                  <div @click="actionClicked('+/-')" class="btn operator">
+                    +/-
+                  </div>
+                  <div @click="actionClicked('AC')" class="btn operator">
+                    AC
+                  </div>
+                  <div @click="actionClicked('CE')" class="btn operator">
+                    CE
+                  </div>
+                  <div @click="actionClicked('C')" class="btn operator">
+                    Del
+                  </div>
+                  <div @click="appendVal('/')" class="btn operator">/</div>
+                  <div @click="appendVal('7')" class="btn">7</div>
+                  <div @click="appendVal('8')" class="btn">8</div>
+                  <div @click="appendVal('9')" class="btn">9</div>
+                  <div @click="appendVal('*')" id="times" class="btn operator">
+                    x
+                  </div>
+                  <div @click="appendVal('4')" class="btn">4</div>
+                  <div @click="appendVal('5')" class="btn">5</div>
+                  <div @click="appendVal('6')" class="btn">6</div>
+                  <div @click="appendVal('-')" id="minus" class="btn operator">
+                    -
+                  </div>
+                  <div @click="appendVal('1')" class="btn">1</div>
+                  <div @click="appendVal('2')" class="btn">2</div>
+                  <div @click="appendVal('3')" class="btn">3</div>
+                  <div @click="appendVal('+')" class="btn operator">+</div>
+                  <div @click="appendVal('0')" class="zero">0</div>
+                  <div @click="appendVal('.')" class="btn">.</div>
+                  <div @click="actionClicked('=')" class="btn operator">=</div>
+                </v-col>
+              </v-row>
+            </v-carousel-item>
+          </v-carousel>
+        </div>
+      </template>
+    </v-container>
+  </div>
 </template>
 <script>
 import ScientificCalculator from "../../models/ScientificCalculator";
 import { create, all } from "mathjs";
 import { renderMathInElement, renderMathInDocument } from "mathlive";
+import Mobile from "../scientific/mobile.vue";
 
 export default {
   data: () => ({
@@ -102,72 +259,64 @@ export default {
     convertLatex: null,
     mfe: null,
     key: 1,
+    windowWidth: window.innerWidth,
     first: true,
   }),
   watch: {
     "cal.currVal": {
       handler(newVal) {
         const mf = document.getElementById("mathfield");
-        if (mf.getValue("ASCIIMath") !== this.cal.currVal) {
+        if (mf.getValue() !== this.cal.currVal) {
           mf.setValue(this.cal.currVal === "" ? "0" : this.cal.currVal);
         }
+        console.log("CurrVal Updated");
+
         this.cal.setCurrVal(newVal);
-        console.log("handler " + this.cal.currVal);
+      },
+    },
+    "cal.history": {
+      handler(newVal) {
+        console.log("History Updated");
+        this.history = newVal;
+
+        document.getElementById("history").setValue(this.history);
       },
     },
   },
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth;
+    },
     mathFieldChange(ev) {
-      this.cal.currVal = ev.target.getValue("ASCIIMath");
-      console.log(ev.target.getValue("ASCIIMath"));
+      this.cal.currVal = ev.target.getValue();
     },
     appendVal(appendStr) {
-      this.cal.append(appendStr);
-      // renderMathInDocument();
-      console.log("current val: " + this.cal.currVal);
-      console.log(this.cal.history);
-      if (this.cal.history === "=")
+      if (this.cal.currVal === "")
+        document.getElementById("mathfield").setValue(appendStr);
+      else document.getElementById("mathfield").insert(appendStr);
+
+      if (this.cal.history === "")
         document.getElementById("history").setValue(this.cal.history);
     },
     actionClicked(str) {
-      console.log(this.cal.currVal);
       this.cal.action(str);
 
-      // console.log(document.getElementById("history"));
-      // renderMathInElement(document.getElementById("history"));
       if (str === "=")
         document.getElementById("history").setValue(this.cal.history);
     },
-    // renderMath: function (event) {
-    //   this.$nextTick(function () {
-    //     renderMathInElement("mathfield");
-    //   });
-    // },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
   },
   beforeMount() {
     this.cal = new ScientificCalculator(create(all));
 
     console.log(create(all));
   },
-  created() {
-    // this.renderMath();
-    // window.addEventListener("keydown", (e) => {
-    //   if (!isNaN(parseInt(e.key)) || e.key === ".") {
-    //     this.appendVal(e.key);
-    //   } else if (
-    //     ["+", "-", "/", "*", "Escape", "Enter", "Backspace"].includes(e.key)
-    //   ) {
-    //     console.log("op");
-    //     let clicked = e.key;
-    //     if (clicked === "Enter") clicked = "=";
-    //     else if (clicked === "Escape") clicked = "CE";
-    //     else if (clicked === "Backspace") clicked = "C";
-    //     // if (["Escape", "Enter", "Backspace"].includes(e.key))
-    //     this.actionClicked(clicked);
-    //     // else this.operatorClicked(clicked);
-    //   }
-    //   console.log(e.key);
-    // });
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
   },
 };
 </script>
@@ -187,6 +336,11 @@ export default {
   background: none;
 }
 
+.sheet {
+  border-radius: 10px;
+  box-shadow: 0px 3px 80px -30px rgba(13, 81, 134, 1);
+}
+
 body {
   background-color: #3fa9fc;
 }
@@ -201,17 +355,30 @@ body {
 
 .calculator {
   display: grid;
-  grid-template-rows: repeat(7, minmax(60px, auto));
+  grid-template-rows: repeat(6, minmax(60px, auto));
   grid-template-columns: repeat(7, 60px);
   grid-gap: 12px;
-  padding: 35px;
+  padding: 20px;
+  padding-top: 10px;
   font-family: "Helvetica";
   font-weight: 300;
   font-size: 18px;
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 3px 80px -30px rgba(13, 81, 134, 1);
-  width: 550px;
+  width: 535px;
+}
+
+.display-items {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(60px, auto));
+  grid-template-columns: repeat(1, 535px);
+  grid-gap: 12px;
+  padding: 20px;
+  padding-top: 10px;
+  font-family: "Helvetica";
+  font-weight: 300;
+  font-size: 18px;
+  background-color: #ffffff;
+  width: 535px;
 }
 
 .btn,
@@ -236,9 +403,6 @@ body {
 
 .display,
 .answer {
-  grid-column: 1 / 8;
-  display: flex;
-  align-items: left;
   /* text-overflow: clip; */
   /* height: 10vh; */
   width: 100%;
@@ -271,5 +435,41 @@ body {
 .operator:hover {
   color: #d9efff;
   background-color: #3fa9fc;
+}
+
+@media screen and (max-width: 535px) {
+  .calculator {
+    display: grid;
+    grid-template-rows: repeat(6, minmax(60px, auto));
+    grid-template-columns: repeat(4, 60px);
+    grid-gap: 12px;
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 18px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 340px;
+  }
+
+  .calculator-display {
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 18px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 340px;
+  }
+
+  .calculator-3 {
+    display: grid;
+    grid-template-rows: repeat(6, minmax(60px, auto));
+    grid-template-columns: repeat(3, 60px);
+    grid-gap: 12px;
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 18px;
+    background-color: #ffffff;
+    width: 300px;
+  }
 }
 </style>
