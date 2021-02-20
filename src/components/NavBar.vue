@@ -12,10 +12,16 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">
-       <v-text font="bold">Hi</v-text>
-       <v-btn @click="logOut" color="primary">
-          Log Out
-      </v-btn>
+         <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">{{profile.full_name}}</v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title @click="logout">Logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </span>
       <span v-else>
          <v-dialog v-model="signup_dialog" max-width="450px">
@@ -32,7 +38,7 @@
                Login
             </v-btn>
           </template>
-           <login :forgotClicked="forgotClicked"></login>
+           <login :forgotClicked="forgotClicked" :knowPassword="knowPassword"></login>
          </v-dialog>
          <v-dialog v-model="forgot_dialog" max-width="450px">
                 <reset-password @validEmail="sendOtp" :knowPassword="knowPassword"></reset-password>
@@ -70,6 +76,7 @@ export default {
     collapseOnScroll: false,
     add_new_password: false,
     sent_otp: false,
+    profile: [],
     items: [
       {
         active: true,
@@ -124,11 +131,6 @@ export default {
     forgotClicked() {
       this.forgot_dialog = true;
       this.login_dialog= false;
-      Vue.toast.success({
-    title:'Hello Sovath',
-    message:'Success'
-})
-      console.log("he;");
     },
     knowPassword()
     {
@@ -182,6 +184,12 @@ export default {
       else{
         this.add_new_password = true;
       }
+    },
+    async getProfile()
+    {
+     await this.$store.dispatch('getUser');
+     console.log(this.$store.getters.stateUser);
+     this.profile =  this.$store.getters.stateUser;
     }
   },
   computed: {
@@ -189,7 +197,13 @@ export default {
     {
       return this.$store.getters.isAuthenticated;
     }
+  },
+  created()
+  {
+     this.getProfile(); 
   }
+  
+
 };
 </script>
 <style lang="scss">

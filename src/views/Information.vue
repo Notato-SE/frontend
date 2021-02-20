@@ -3,6 +3,11 @@
     <v-col cols="12" class="mt-10">
       <h1>Information</h1>
     </v-col>
+    <v-col cols="12" class="mt-10">
+      <v-btn color="primary" @click="logout">
+        Log Out
+      </v-btn>
+    </v-col>
     <v-col cols="12">
       <h4>{{ form.full_name }}</h4>
     </v-col>

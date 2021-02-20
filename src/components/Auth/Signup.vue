@@ -1,5 +1,6 @@
 <template>
   <v-container>
+     <alert :message="message" :error="error" :success="success"></alert>
       <v-row justify="center">
         <!-- <v-dialog v-model="dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
@@ -132,14 +133,19 @@ export default {
     {
       try{
        var resp = await this.register(this.user);
-       this.success = true;
-       this.error = false;
-       this.message = resp.data.message;
+      this.message = resp.data.message;
+            this.$notify({
+            group: 'foo',
+            type: 'success',
+            text: 'SignUp Successfully'
+          });
       }
       catch
       {
         const err =  this.$store.getters.stateErrors;
-       
+        this.message = err.message;
+        this.success = false;
+        this.error = true;
       }
       this.dialog = false;
      

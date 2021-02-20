@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <alert :message="message" :success="success" :error="error"></alert>
     <v-row justify="center">
       <v-card rounded="xl">
         <v-card-title class="mt-4 mb-2">
@@ -57,7 +58,9 @@
 
 <script>
 import { mapActions } from "vuex";
+import Alert from '../Alert.vue';
 export default {
+  components: { Alert },
   name: "forgot-password",
   props: ["backToLogin"],
   data: () => {
@@ -86,11 +89,13 @@ export default {
         this.user.email = this.$store.getters.stateEmail;
         this.user.otp = this.$store.getters.stateOtp;
         var resp = await this.createForgotPassword(this.user);
-        this.success = true;
-        this.error = false;
-        console.log(resp);
-        this.message = resp.data.message;
         this.$emit("confirmPassword", true);
+        this.message = resp.data.message;
+            this.$notify({
+            group: 'foo',
+            type: 'success',
+            text: 'Forgot Password Successfully'
+          });
       } catch
       {
         this.$emit("confirmPassword", false);

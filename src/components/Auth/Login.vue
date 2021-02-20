@@ -1,13 +1,16 @@
 <template>
     
     <v-container>
-      <v-row justify="center">
+    
+       <v-row justify="center">
+       
          <!-- <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
               Open Dialog
             </v-btn>
           </template> -->
           <v-card rounded="xl">
+             <alert :message="message" :success="success" :error="error"></alert>
             <v-card-title class="mt-4 mb-2">
               <span>Welcome back, my friend!</span>
             </v-card-title>
@@ -86,8 +89,10 @@
 
 <script>
 import { mapActions } from "vuex";
+import Alert from '../Alert.vue';
 
 export default {
+  components: { Alert },
   name: 'login',
   props: ['forgotClicked', 'knowPassword'],
   data: () => {
@@ -116,13 +121,19 @@ export default {
     async submit()
     {
       try{
-       var resp = await this.login(this.user);
-       this.message = resp.data.message;
+       await this.login(this.user);
+       this.$notify({
+            group: 'foo',
+            type: 'success',
+            text: 'Login Successfully'
+          });
       }
       catch
       {
         const err =  this.$store.getters.stateErrors;
         this.message = err.message;
+        this.success = false;
+        this.error = true;
       }
       this.dialog = false;
     }

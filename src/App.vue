@@ -3,6 +3,7 @@
     <nav-bar></nav-bar>
     
     <v-main>
+      <notifications group="foo" position="bottom center"/>
       <drawer></drawer>
       <router-view />
     </v-main>
@@ -26,10 +27,12 @@ export default {
   },
   data: () => ({
     drawer: false,
-  }),
+  })
 };
 
 Vue.mixin(helperMixins);
+
+
 </script>
 
 <style lang="scss">
@@ -54,3 +57,5 @@ Vue.mixin(helperMixins);
   }
 }
 </style>
+
+

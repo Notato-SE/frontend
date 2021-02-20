@@ -4,6 +4,7 @@ import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store/index";
 import axios from "axios";
+import Notifications from 'vue-notification'
 
 
 
@@ -27,6 +28,21 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 library.add(faCoffee);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.use(Notifications);
+
+axios.interceptors.response.use(undefined, function (error) {
+  if (error) {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry && originalRequest.url !== 'login') {
+        originalRequest._retry = true;
+        store.dispatch('logout')
+        router.push(`/?login=1&t=${Date.now()}`);
+
+    }
+    return Promise.reject(error)
+  }
+})
 
 Vue.config.productionTip = false;
 new Vue({
