@@ -8,7 +8,9 @@
     >
       <v-app-bar-nav-icon @click.prevent="update()"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <router-link to="/">Notato</router-link>
+        <router-link to="/" style="text-decoration: none"
+          ><span style="font-weight: bold; font-size: 28px">NOTATO</span>
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">

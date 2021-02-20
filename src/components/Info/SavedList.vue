@@ -4,7 +4,13 @@
       <v-col cols="12" v-for="data in datas" :key="data.id">
         <v-row>
           <v-col cols="5">
-            <h1>{{ data.inputs.name }}</h1>
+            <h2>
+              {{
+                data.name.length > 10
+                  ? data.name.slice(0, 10) + "..."
+                  : data.name
+              }}
+            </h2>
             #{{ data.id }}, {{ data.created_at_display }}
           </v-col>
           <v-col cols="1" class="d-flex align-center justify-center">
@@ -35,7 +41,7 @@
     <v-dialog v-model="dialog" width="700">
       <v-card v-if="dialog">
         <v-card-title class="headline grey lighten-2">
-          Result History
+          {{ curData.name }}
         </v-card-title>
 
         <v-row>

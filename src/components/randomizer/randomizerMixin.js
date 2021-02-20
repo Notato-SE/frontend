@@ -6,7 +6,7 @@ export default {
 
     async random() {
       this.form.results = null;
-      let data = await this.postAxios("/randomizer", this.form);
+      let data = await this.postAxios("/randomizer", this.form, "post", false);
 
       this.form.results = data.results;
     },
