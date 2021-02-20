@@ -1,6 +1,5 @@
 <template>
   <v-container>
-     <alert :message="message" :error="error" :success="success"></alert>
       <v-row justify="center">
         <!-- <v-dialog v-model="dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
@@ -9,8 +8,9 @@
             </v-btn>
           </template> -->
           <v-card rounded="xl">
+            <Alert />
             <v-card-title class="mt-4 mb-2">
-              <span>Welcome to our world!</span>
+              <p class="text-break">Welcome to our world!</p>
             </v-card-title>
             <v-form v-model="isValid" @submit.prevent="submit">
               <v-container>
@@ -131,24 +131,9 @@ export default {
     ...mapActions(["register"]),
     async submit()
     {
-      try{
-       var resp = await this.register(this.user);
-      this.message = resp.data.message;
-            this.$notify({
-            group: 'foo',
-            type: 'success',
-            text: 'SignUp Successfully'
-          });
-      }
-      catch
-      {
-        const err =  this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
-      }
+      var data = await this.postAxios("/sign-up", this.user);
+      this.$store.dispatch('getToken', data.access_token)
       this.dialog = false;
-     
     },
   },
 };

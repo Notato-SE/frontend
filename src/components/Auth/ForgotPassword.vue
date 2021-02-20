@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <alert :message="message" :success="success" :error="error"></alert>
     <v-row justify="center">
       <v-card rounded="xl">
+        <Alert />
         <v-card-title class="mt-4 mb-2">
-          <span>Please input your new password.</span>
+          <p class="text-break">Please input your new password.</p>
         </v-card-title>
         <v-form v-model="isValid" @submit.prevent="submit">
           <v-container>
@@ -58,9 +58,8 @@
 
 <script>
 import { mapActions } from "vuex";
-import Alert from '../Alert.vue';
+
 export default {
-  components: { Alert },
   name: "forgot-password",
   props: ["backToLogin"],
   data: () => {
@@ -75,7 +74,7 @@ export default {
       },
       passwordRules: [
         (v) => !!v || "Password is required",
-        (v) => (v && v.length >= 5) || "Password must have 5+ characters",
+        (v) => (v && v.length >= 8) || "Password must have 5+ characters",
       ],
       success: false,
       error: false,
@@ -88,21 +87,12 @@ export default {
       try {
         this.user.email = this.$store.getters.stateEmail;
         this.user.otp = this.$store.getters.stateOtp;
-        var resp = await this.createForgotPassword(this.user);
+        await this.postAxios("/forgot-password", this.user);
+        this.createForgotPassword(this.user);
         this.$emit("confirmPassword", true);
-        this.message = resp.data.message;
-            this.$notify({
-            group: 'foo',
-            type: 'success',
-            text: 'Forgot Password Successfully'
-          });
       } catch
       {
         this.$emit("confirmPassword", false);
-        const err = this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
       }
     },
   },

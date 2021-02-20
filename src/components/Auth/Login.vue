@@ -10,9 +10,9 @@
             </v-btn>
           </template> -->
           <v-card rounded="xl">
-             <alert :message="message" :success="success" :error="error"></alert>
+            <Alert />
             <v-card-title class="mt-4 mb-2">
-              <span>Welcome back, my friend!</span>
+              <p class="text-break">Welcome back, my friend!</p>
             </v-card-title>
               <v-form v-model="isValid" @submit.prevent="submit">
                 <v-container>
@@ -76,7 +76,7 @@
                   </v-row>
                   <v-row class="mx-4 mb-4">
                     <v-col cols="12">
-                      <p class="login-msg">Want to be part of us?</p>
+                      <v-btn @click="signupClick" class="login-msg">Want to be part of us?</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -89,12 +89,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import Alert from '../Alert.vue';
-
 export default {
-  components: { Alert },
   name: 'login',
-  props: ['forgotClicked', 'knowPassword'],
+  props: ['forgotClicked', 'knowPassword', 'signupClick'],
   data: () => {
     return {
       dialog: true,
@@ -110,31 +107,16 @@ export default {
       passwordRules: [ 
         v => !!v || 'Password is required', 
         v => (v && v.length >= 5) || 'Password must have 5+ characters' 
-      ],
-      success: false,
-      error: false,
-      message: null
+      ]
     };
   },
   methods: {
     ...mapActions(['login']),
     async submit()
     {
-      try{
-       await this.login(this.user);
-       this.$notify({
-            group: 'foo',
-            type: 'success',
-            text: 'Login Successfully'
-          });
-      }
-      catch
-      {
-        const err =  this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
-      }
+      var data = await this.postAxios("/login", this.user);
+    
+      this.$store.dispatch('getToken', data.access_token)
       this.dialog = false;
     }
   }

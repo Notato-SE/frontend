@@ -66,20 +66,17 @@ const actions = {
   },
   async createForgotPassword({dispatch}, data)
   {
-     var resp = await axios.post('forgot-password', data).catch((error) => {dispatch('getErrors', error.response.data)} );
      var user = new FormData();
      user.append('email' , data.email)
      user.append('password', data.new_password);
-  
      dispatch('login', user);
 
-     return resp;
   },
   getToken({commit}, token)
   {
+    console.log(token);
     localStorage.setItem('token', token)
-    axios.defaults.headers.common['Authorization'] = token;
-    console.log('token');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     commit('setToken', token)
   },
   getErrors({commit}, error)

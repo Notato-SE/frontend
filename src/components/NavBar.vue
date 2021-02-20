@@ -8,20 +8,31 @@
     >
       <v-app-bar-nav-icon @click.prevent="update()"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <router-link to="/">Notato</router-link>
+        <router-link to="/" style="text-decoration: none"
+          ><span style="font-weight: bold; font-size: 28px">NOTATO</span>
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">
          <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">{{profile.full_name}}</v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title @click="logout">Logout</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            text
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item class="d-block">
+                <v-list-item-title style="padding: 10px;"><router-link class="text-dark text-decoration-none" to='/info'>Profile</router-link></v-list-item-title>
+                <v-list-item-title style="padding: 10px;"><span @click="logout">logout</span></v-list-item-title>
+           </v-list-item>
+        </v-list>
+      </v-menu>
+ 
       </span>
       <span v-else>
         <v-dialog v-model="signup_dialog" max-width="450px">
@@ -51,7 +62,7 @@
               Login
             </v-btn>
           </template>
-          <login :forgotClicked="forgotClicked"></login>
+          <login :forgotClicked="forgotClicked" :signupClick="signupClick"></login>
         </v-dialog>
         <v-dialog v-model="forgot_dialog" max-width="450px">
           <reset-password
@@ -99,7 +110,10 @@ export default {
     collapseOnScroll: false,
     add_new_password: false,
     sent_otp: false,
-    profile: [],
+    window: {
+            width: 0,
+            height: 0
+        },
     items: [
       {
         active: true,
@@ -153,6 +167,11 @@ export default {
       this.forgot_dialog = true;
       this.login_dialog= false;
     },
+    signupClick()
+    {
+      this.signup_dialog = true;
+      this.login_dialog= false;
+    },
     knowPassword() {
       this.forgot_dialog = false;
       this.login_dialog = true;
@@ -193,30 +212,20 @@ export default {
       } else {
         this.add_new_password = true;
       }
-    },
-    async getProfile()
-    {
-     await this.$store.dispatch('getUser');
-     console.log(this.$store.getters.stateUser);
-     this.profile =  this.$store.getters.stateUser;
     }
   },
   computed: {
     isLoggedIn: function () {
       return this.$store.getters.isAuthenticated;
     }
-  },
-  created()
-  {
-     this.getProfile(); 
   }
-  
-
 };
 </script>
 <style lang="scss">
 .authenticated-btn {
   margin-left: 30px;
+  white-space: normal !important;
+  word-wrap: break-word;
 }
 .signup {
   text-decoration: none;
@@ -226,4 +235,6 @@ export default {
   text-decoration: none;
   font-weight: 600;
 }
+
+
 </style>

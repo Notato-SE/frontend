@@ -1,15 +1,23 @@
 <template>
   <div>
     <v-dialog v-model="internal_dialog" width="500" @close="closeDialog()">
-      <v-card>
-        <v-card-title class="headline grey lighten-2">
+      <v-card class="rounded-lg">
+        <!-- <v-card-title class="headline grey lighten-2">
           Save the results
-        </v-card-title>
+        </v-card-title> -->
+
+        <h4 class="pt-5 pl-5" style="text-align: start">
+          Provide a meaningful name so that you can recall it later.
+        </h4>
 
         <div class="d-flex justify-center mt-5" style="text-align: start">
           <div style="width: 70%">
             <p>Name</p>
-            <v-text-field v-model="internal_form.name" outlined></v-text-field>
+            <v-text-field
+              v-model="internal_form.name"
+              outlined
+              placeholder="My student final project team"
+            ></v-text-field>
           </div>
         </div>
 
@@ -40,7 +48,11 @@ export default {
     async save() {
       this.loading = true;
       if (this.form.results) {
-        await this.postAxios("/randomizer/save", this.internal_form);
+        try {
+          await this.postAxios("/randomizer/save", this.internal_form);
+        } catch (error) {
+          console.log();
+        }
       }
 
       this.closeDialog();

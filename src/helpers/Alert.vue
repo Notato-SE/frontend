@@ -1,7 +1,15 @@
 <template id="alert">
   <div v-if="show" class="d-flex justify-center mt-5">
-    <div style="width: 70%">
-      <v-alert outlined border="left" text dismissible :type="type">
+    <div style="width: 80%">
+      <v-alert
+        v-model="show"
+        outlined
+        border="left"
+        text
+        dense
+        dismissible
+        :type="type"
+      >
         {{ message }}
       </v-alert>
     </div>
@@ -9,16 +17,25 @@
 </template>;
 
 <script>
+import EventBus from "@/helpers/event-bus";
+
 export default {
   template: "#alert",
   data: () => ({
     message: "Testing",
-    show: true,
+    show: false,
     type: "success",
   }),
+  mounted() {
+    EventBus.$on("SET_ALERT", (payload) => {
+      this.setAlert(payload);
+    });
+  },
   methods: {
-    alertSuccess() {
-      this.message = "asdasd";
+    setAlert({ show, type, message }) {
+      this.show = show;
+      this.type = type;
+      this.message = message;
     },
   },
 };
