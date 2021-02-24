@@ -39,10 +39,12 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               depressed
-              class="signup text-dark authenticated-btn"
+              :class="($vuetify.breakpoint.xsOnly)? 'respon-btn' : 'authenticated-btn'"
+              class="signup text-dark"
               @click="signup"
               v-bind="attrs"
               v-on="on"
+              :small="$vuetify.breakpoint.xsOnly"
             >
               SignUp
             </v-btn>
@@ -52,12 +54,13 @@
         <v-dialog v-model="login_dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="authenticated-btn"
+              :class="($vuetify.breakpoint.xsOnly)? 'respon-btn' : 'authenticated-btn'"
               @click="login"
               color="primary"
               dark
               v-bind="attrs"
               v-on="on"
+              :small="$vuetify.breakpoint.xsOnly"
             >
               Login
             </v-btn>
@@ -154,8 +157,8 @@ export default {
       console.log("drawer clicked " + this.drawer);
     },
     async logOut() {
-      console.log(this.$store.getters.token);
       await this.logout();
+      this.$router.push(`/?t=${Date.now()}`);
     },
     login() {
       this.login_dialog = true;
@@ -216,6 +219,7 @@ export default {
   },
   computed: {
     isLoggedIn: function () {
+
       return this.$store.getters.isAuthenticated;
     }
   }
@@ -234,6 +238,10 @@ export default {
 .login {
   text-decoration: none;
   font-weight: 600;
+}
+.respon-btn
+{
+  margin: 2px;
 }
 
 
