@@ -36,7 +36,9 @@
           <span v-else>Rad</span>
         </div>
         <div @click="appendVal('!')" class="btn operator">x!</div>
-        <div @click="appendVal('1/')" class="btn operator">1/x</div>
+        <div @click="appendVal('$$\\frac{1}{#@}$$')" class="btn operator">
+          1/x
+        </div>
         <div @click="actionClicked('MRC')" class="btn operator">MRC</div>
         <div @click="actionClicked('M+')" class="btn operator">M+</div>
         <div @click="actionClicked('M-')" class="btn operator">M-</div>
@@ -44,24 +46,30 @@
 
         <div @click="appendVal('(')" class="btn operator">(</div>
         <div @click="appendVal(')')" class="btn operator">)</div>
-        <div @click="appendVal('%')" class="btn operator">%</div>
+        <div @click="appendVal('\\%')" class="btn operator">%</div>
         <div @click="actionClicked('AC')" class="btn operator">AC</div>
         <div @click="actionClicked('CE')" class="btn operator">CE</div>
         <div @click="actionClicked('C')" class="btn operator">Del</div>
-        <div @click="appendVal('/')" class="btn operator">/</div>
+        <div @click="appendVal('$$\\frac{#@}{#?}$$')" class="btn operator">
+          /
+        </div>
 
-        <div @click="appendVal('\\sqrt[]{}')" class="btn operator">
+        <div @click="appendVal('\\sqrt[#0]{#1}')" class="btn operator">
           <sup>y</sup>√<sub>x</sub>
         </div>
-        <div @click="appendVal('\\sqrt[2]{')" class="btn operator">√</div>
-        <div @click="appendVal('^')" class="btn operator">x<sup>y</sup></div>
+        <div @click="appendVal('\\sqrt[]{#0}')" class="btn operator">√</div>
+        <div @click="appendVal('$$#@^{#?}$$')" class="btn operator">
+          x<sup>y</sup>
+        </div>
         <div @click="appendVal('7')" class="btn">7</div>
         <div @click="appendVal('8')" class="btn">8</div>
         <div @click="appendVal('9')" class="btn">9</div>
         <div @click="appendVal('*')" id="times" class="btn operator">x</div>
 
         <div @click="appendVal('\\pi')" class="btn operator">π</div>
-        <div @click="appendVal('e^')" class="btn operator">e<sup>x</sup></div>
+        <div @click="appendVal('$$e^#@$$')" class="btn operator">
+          e<sup>x</sup>
+        </div>
         <div @click="appendVal('^2')" class="btn operator">x<sup>2</sup></div>
         <div @click="appendVal('4')" class="btn">4</div>
         <div @click="appendVal('5')" class="btn">5</div>
@@ -69,21 +77,21 @@
         <div @click="appendVal('-')" id="minus" class="btn operator">-</div>
 
         <div
-          @click="appendVal(first ? 'sin(' : 'sin^{-1}(')"
+          @click="appendVal(first ? 'sin(#0)' : 'sin^{-1}(#0)')"
           class="btn operator"
         >
           <span v-if="first">sin</span>
           <span v-else>sin<sup>-1</sup></span>
         </div>
         <div
-          @click="appendVal(first ? 'cos()' : 'cos^{-1}(')"
+          @click="appendVal(first ? 'cos(#0)' : 'cos^{-1}(#0)')"
           class="btn operator"
         >
           <span v-if="first">cos</span>
           <span v-else>cos<sup>-1</sup></span>
         </div>
         <div
-          @click="appendVal(first ? 'tan()' : 'tan^{-1}(')"
+          @click="appendVal(first ? 'tan(#0)' : 'tan^{-1}(#0)')"
           class="btn operator"
         >
           <span v-if="first">tan</span>
@@ -95,8 +103,8 @@
         <div @click="appendVal('+')" class="btn operator">+</div>
 
         <div @click="first = !first" class="btn operator">1st</div>
-        <div @click="appendVal('\\ln()')" class="btn operator">Ln</div>
-        <div @click="appendVal('\\log()')" class="btn operator">Log</div>
+        <div @click="appendVal('\\ln(#0)')" class="btn operator">Ln</div>
+        <div @click="appendVal('\\log(#0)')" class="btn operator">Log</div>
         <div @click="appendVal('0')" class="btn">0</div>
         <div @click="appendVal('00')" class="btn">00</div>
         <div @click="appendVal('.')" class="btn">.</div>
@@ -106,39 +114,45 @@
         <div>
           <v-carousel
             height="100%"
-            class="m-2 p-2 d-flex justify-center"
+            class="px-3 pb-5 mb-5 d-flex justify-center"
             :show-arrows="false"
             hide-delimiter-background
             v-model="tab"
           >
             <v-carousel-item key="scientific">
               <v-row>
-                <v-col cols="11" class="calculator-3" style="width: 340px">
+                <v-col cols="11" class="calculator-3 align-left">
                   <div @click="cal.deg = !cal.deg" class="btn operator">
                     <span v-if="cal.deg">Deg</span>
                     <span v-else>Rad</span>
                   </div>
                   <div @click="appendVal('!')" class="btn operator">x!</div>
-                  <div @click="appendVal('\\frac{1}{}')" class="btn operator">
+                  <div
+                    @click="appendVal('$$\\frac{1}{#@}$$')"
+                    class="btn operator"
+                  >
                     1/x
                   </div>
 
                   <div @click="appendVal('(')" class="btn operator">(</div>
                   <div @click="appendVal(')')" class="btn operator">)</div>
-                  <div @click="appendVal('%')" class="btn operator">%</div>
+                  <div @click="appendVal('\\%')" class="btn operator">%</div>
 
-                  <div @click="appendVal('\\sqrt[]{}')" class="btn operator">
+                  <div
+                    @click="appendVal('\\sqrt[#0]{#1}')"
+                    class="btn operator"
+                  >
                     <sup>y</sup>√<sub>x</sub>
                   </div>
-                  <div @click="appendVal('\\sqrt[2]{')" class="btn operator">
+                  <div @click="appendVal('\\sqrt[]{#0}')" class="btn operator">
                     √
                   </div>
-                  <div @click="appendVal('^')" class="btn operator">
+                  <div @click="appendVal('$$#@^{#?}$$')" class="btn operator">
                     x<sup>y</sup>
                   </div>
 
                   <div @click="appendVal('\\pi')" class="btn operator">π</div>
-                  <div @click="appendVal('e^')" class="btn operator">
+                  <div @click="appendVal('$$e^#@$$')" class="btn operator">
                     e<sup>x</sup>
                   </div>
                   <div @click="appendVal('^2')" class="btn operator">
@@ -146,24 +160,24 @@
                   </div>
 
                   <div
-                    @click="appendVal(cal.first ? 'sin(' : 'sin^{-1}(')"
+                    @click="appendVal(first ? 'sin(#0)' : 'sin^{-1}(#0)')"
                     class="btn operator"
                   >
-                    <span v-if="cal.first">sin</span>
+                    <span v-if="first">sin</span>
                     <span v-else>sin<sup>-1</sup></span>
                   </div>
                   <div
-                    @click="appendVal(cal.first ? 'cos()' : 'cos^{-1}(')"
+                    @click="appendVal(first ? 'cos(#0)' : 'cos^{-1}(#0)')"
                     class="btn operator"
                   >
-                    <span v-if="cal.first">cos</span>
+                    <span v-if="first">cos</span>
                     <span v-else>cos<sup>-1</sup></span>
                   </div>
                   <div
-                    @click="appendVal(cal.first ? 'tan()' : 'tan^{-1}(')"
+                    @click="appendVal(first ? 'tan(#0)' : 'tan^{-1}(#0)')"
                     class="btn operator"
                   >
-                    <span v-if="cal.first">tan</span>
+                    <span v-if="first">tan</span>
                     <span v-else>tan<sup>-1</sup></span>
                   </div>
 
@@ -179,24 +193,22 @@
                 </v-col>
                 <v-col cols="1"
                   ><div
-                    style="
-                      height: 400px;
-                      width: 20px;
-                      background-color: #d9efff;
-                    "
+                    class="rounded"
+                    style="height: 100%; width: 20px; background-color: #d9efff"
                   ></div
                 ></v-col>
               </v-row>
             </v-carousel-item>
             <v-carousel-item key="simple">
-              <v-row>
-                <v-col cols="1" class="align-center">
-                  <div
+              <v-row class="pl-5">
+                <v-col cols="1"
+                  ><div
+                    class="rounded"
                     style="height: 100%; width: 20px; background-color: #d9efff"
-                  ></div>
-                </v-col>
+                  ></div
+                ></v-col>
 
-                <v-col cols="11" class="calculator align-right">
+                <v-col cols="11" class="calculator align-right py-0 pl-2">
                   <div @click="actionClicked('MRC')" class="btn operator">
                     MRC
                   </div>
@@ -250,13 +262,10 @@
 <script>
 import ScientificCalculator from "../../models/ScientificCalculator";
 import { create, all } from "mathjs";
-import { renderMathInElement, renderMathInDocument } from "mathlive";
-import Mobile from "../scientific/mobile.vue";
 
 export default {
   data: () => ({
     cal: null,
-    convertLatex: null,
     mfe: null,
     key: 1,
     windowWidth: window.innerWidth,
@@ -266,6 +275,7 @@ export default {
     "cal.currVal": {
       handler(newVal) {
         const mf = document.getElementById("mathfield");
+        console.log(newVal, this.cal.currVal);
         if (mf.getValue() !== this.cal.currVal) {
           mf.setValue(this.cal.currVal === "" ? "0" : this.cal.currVal);
         }
@@ -291,7 +301,7 @@ export default {
       this.cal.currVal = ev.target.getValue();
     },
     appendVal(appendStr) {
-      if (this.cal.currVal === "")
+      if (this.cal.currVal === "0" || this.cal.currVal === "")
         document.getElementById("mathfield").setValue(appendStr);
       else document.getElementById("mathfield").insert(appendStr);
 
@@ -323,9 +333,9 @@ export default {
 
 <style scoped>
 #mathfield {
-  border: 0px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border: none;
 }
+
 * {
   margin: 0;
   padding: 0;
