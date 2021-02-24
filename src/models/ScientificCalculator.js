@@ -1,14 +1,11 @@
 /* eslint-disable no-case-declarations */
 export default function ScientificCalculator(math) {
   return {
-    currVal: "10+20",
+    currVal: "0",
     history: "",
     justReset: true,
     deg: true,
     mrcClickedPreviously: false,
-    ScientificCalculator(math) {
-      console.log("constructed");
-    },
     append(appendStr) {
       this.resetMrcPreviouslyClicked();
       console.log({ reset: this.justReset });
@@ -35,7 +32,9 @@ export default function ScientificCalculator(math) {
     setCurrVal(str) {
       this.afterReset();
 
-      this.currVal = str;
+      this.currVal = this.currVal.startsWith("Invalidformat.")
+        ? str.replace("Invalidformat.", "")
+        : str;
     },
     action(str) {
       console.log({ reset: this.justReset });
@@ -126,10 +125,13 @@ export default function ScientificCalculator(math) {
     displayToFormula(val) {
       return val
         .replace("\\", "")
+        .replace(" ", "")
         .replace("log(", "log10(")
         .replace("ln(", "log(")
-        .replace(/sqrt\[(.*?)+\]\{(.*?)\}/i, "nthRoot($2, $1)")
+        .replace("%", "/100")
+        .replace(/frac\{(.*?)+\}\{(.*?)\}/i, "$1/$2")
         .replace(/sqrt\[\]\{(.*?)\}/i, "sqrt($1)")
+        .replace(/sqrt\[(.*?)+\]\{(.*?)\}/i, "nthRoot($2, $1)")
         .replace(/sin\((.*?)\)/i, "sin($1 " + (this.deg ? "deg" : "rad") + ")")
         .replace(
           /sin\^{-1}\((.*?)\)/i,

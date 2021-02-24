@@ -3,7 +3,7 @@
     <nav-bar></nav-bar>
 
     <v-main>
-      <notifications group="foo" position="bottom center"/>
+      <notifications group="foo" position="bottom center" />
       <drawer></drawer>
       <router-view />
     </v-main>
@@ -29,7 +29,7 @@ export default {
   },
   data: () => ({
     drawer: false,
-  })
+  }),
 };
 
 Vue.mixin(helperMixins);
@@ -40,7 +40,7 @@ Vue.prototype.$axios = axios;
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Roboto, Arial !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
