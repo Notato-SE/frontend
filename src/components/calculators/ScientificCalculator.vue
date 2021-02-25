@@ -260,12 +260,9 @@
   </div>
 </template>
 <script>
-import ScientificCalculator from "../../models/ScientificCalculator";
-import { create, all } from "mathjs";
-
 export default {
+  props: ["cal"],
   data: () => ({
-    cal: null,
     mfe: null,
     key: 1,
     windowWidth: window.innerWidth,
@@ -279,7 +276,7 @@ export default {
         if (mf.getValue() !== this.cal.currVal) {
           mf.setValue(this.cal.currVal === "" ? "0" : this.cal.currVal);
         }
-        console.log("CurrVal Updated");
+        console.log(["CurrVal Updated", this.cal]);
 
         this.cal.setCurrVal(newVal);
       },
@@ -298,9 +295,21 @@ export default {
       this.windowWidth = window.innerWidth;
     },
     mathFieldChange(ev) {
+      console.log("math field changed");
       this.cal.currVal = ev.target.getValue();
+      // this.cal.setCurrVal(ev.target.getValue());
     },
     appendVal(appendStr) {
+      console.log([
+        this.cal.history !== "",
+        !isNaN(parseInt(appendStr)) || appendStr === ".",
+      ]);
+      if (
+        this.cal.history !== "" &&
+        (!isNaN(parseInt(appendStr)) || appendStr === ".")
+      )
+        this.cal.currVal = "0";
+
       if (this.cal.currVal === "0" || this.cal.currVal === "")
         document.getElementById("mathfield").setValue(appendStr);
       else document.getElementById("mathfield").insert(appendStr);
@@ -319,11 +328,6 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
-  },
-  beforeMount() {
-    this.cal = new ScientificCalculator(create(all));
-
-    console.log(create(all));
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.onResize);

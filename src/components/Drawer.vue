@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app v-model="$store.state.drawer">
+  <v-navigation-drawer app v-model="$store.state.drawer" @input="onUpdate">
     <v-list-item-group nav>
       <v-list-item-group active-class="deep-purple--text text--accent-4">
         <v-list-item v-for="item in items" :key="item.title" :to="item.path">
@@ -16,32 +16,35 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
-    collapseOnScroll: false,
     items: [
       {
         active: true,
         exact: true,
         title: "Calculator",
-        icon: "mdi-heart",
+        icon: "mdi-calculator-variant",
         path: "/",
       },
       {
         active: false,
         exact: true,
         title: "Converter",
-        icon: "mdi-heart",
+        icon: "mdi-cloud-refresh",
         path: "/converter",
       },
       {
         active: false,
         exact: true,
         title: "Randomizer",
-        icon: "mdi-heart",
+        icon: "mdi-desktop-tower",
         path: "/randomizer",
-      }
+      },
     ],
   }),
+  methods: {
+    onUpdate(state) {
+      this.$store.commit("updateDrawer", state);
+    },
+  },
   watch: {
     drawer: function (newValue) {
       this.drawer = newValue;

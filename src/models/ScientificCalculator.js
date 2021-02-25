@@ -95,10 +95,6 @@ export default function ScientificCalculator(math) {
       this.checkAndFormatCurrVal();
     },
     calculate() {
-      console.log({
-        a: document.getElementById("mathfield").getValue("ASCIIMath"),
-      });
-
       if (this.currVal === "") return "0";
 
       try {
