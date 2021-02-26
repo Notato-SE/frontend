@@ -137,17 +137,6 @@ export default {
           document.body.appendChild(fileLink);
 
           fileLink.click();
-
-          // const url = URL.createObjectURL(
-          //   new Blob([response.data], {
-          //     type: "application/vnd.ms-excel",
-          //   })
-          // );
-          // const link = document.createElement("a");
-          // link.href = url;
-          // link.setAttribute("download", fileName);
-          // document.body.appendChild(link);
-          // link.click();
         });
 
       data.loading.downloadExcel = false;
