@@ -52,11 +52,11 @@ export default function Calculator() {
       if (this.currVal === "-" || this.currVal === "") this.currVal = "0";
     },
     action(str) {
-      if (this.justReset) {
-        this.reset();
-        this.currVal = "0";
-        this.history = "";
-      }
+      // if (this.justReset) {
+      //   this.reset();
+      //   this.currVal = "0";
+      //   this.history = "";
+      // }
 
       switch (str) {
         case "AC":
@@ -85,7 +85,7 @@ export default function Calculator() {
         case "M+":
         case "M-":
           const mem = localStorage.getItem("mem") ?? "0";
-          console.log(mem);
+          console.log([mem, parseFloat(this.currVal)]);
           localStorage.setItem(
             "mem",
             str === "M+"

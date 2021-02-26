@@ -320,8 +320,8 @@ export default {
     actionClicked(str) {
       this.cal.action(str);
 
-      if (str === "=")
-        document.getElementById("history").setValue(this.cal.history);
+      // if (str === "=")
+      document.getElementById("history").setValue(this.cal.history);
     },
   },
   mounted() {

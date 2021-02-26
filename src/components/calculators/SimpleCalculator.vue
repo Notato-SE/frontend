@@ -63,6 +63,18 @@ export default {
   data: () => ({
     // cal: new Calculator(),
   }),
+  methods: {
+    appendVal(appendStr) {
+      this.cal.append(appendStr);
+      console.log("current val: " + this.cal.currVal);
+    },
+    operatorClicked(op) {
+      this.cal.setOp(op);
+    },
+    actionClicked(str) {
+      this.cal.action(str);
+    },
+  },
 };
 </script>
 <style scoped>
