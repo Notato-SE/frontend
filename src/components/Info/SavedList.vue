@@ -18,7 +18,10 @@
             </h2>
             #{{ data.id }}, {{ data.created_at_display }}
           </v-col>
-          <v-col cols="1" class="d-flex align-center justify-center">
+          <v-col
+            cols="1"
+            class="d-flex align-center justify-center text-center"
+          >
             {{ data.random_type_data }}
           </v-col>
           <v-col cols="4" class="d-flex align-center justify-center">
@@ -121,16 +124,31 @@ export default {
     async downloadExcel(data) {
       data.loading.downloadExcel = true;
 
-      axios.get(`/randomizer/export/${data.id}`).then((response) => {
-        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement("a");
+      axios
+        .get(`/randomizer/export/${data.id}`, {
+          responseType: "blob",
+        })
+        .then((response) => {
+          var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+          var fileLink = document.createElement("a");
 
-        fileLink.href = fileURL;
-        fileLink.setAttribute("download", "random.xls");
-        document.body.appendChild(fileLink);
+          fileLink.href = fileURL;
+          fileLink.setAttribute("download", "random.xls");
+          document.body.appendChild(fileLink);
 
-        fileLink.click();
-      });
+          fileLink.click();
+
+          // const url = URL.createObjectURL(
+          //   new Blob([response.data], {
+          //     type: "application/vnd.ms-excel",
+          //   })
+          // );
+          // const link = document.createElement("a");
+          // link.href = url;
+          // link.setAttribute("download", fileName);
+          // document.body.appendChild(link);
+          // link.click();
+        });
 
       data.loading.downloadExcel = false;
     },
