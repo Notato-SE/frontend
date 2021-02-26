@@ -2,8 +2,9 @@
     <v-container>
       <v-row justify="center">
           <v-card rounded="xl">
+            <Alert />
             <v-card-title class="mt-4 mb-2">
-              <span>Please tell us your email address so that we can help you.</span>
+              <p class="text-break">Please tell us your email address so that we can help you.</p>
             </v-card-title>
               <v-form  v-model="isValid" @submit.prevent="submit">
                 <v-container>
@@ -73,20 +74,12 @@ export default {
     async submit()
     {
        try{
-       var resp = await this.forgotPassword(this.user.email);
-       this.success = true;
-       this.error = false;
-       console.log(resp);
-       this.message = resp.data.message;
+       await this.getAxios('/forgot-password?email=' + this.user.email);
+       this.$store.commit('setEmail', this.user.email);
        this.$emit('validEmail', true);
       }
       catch(e)
       {
-        this.validEmail = false;
-        const err =  this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
         this.$emit('validEmail', false);
       }
       this.dialog = false;

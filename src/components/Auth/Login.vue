@@ -1,15 +1,18 @@
 <template>
     
     <v-container>
-      <v-row justify="center">
+    
+       <v-row justify="center">
+       
          <!-- <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
               Open Dialog
             </v-btn>
           </template> -->
           <v-card rounded="xl">
+            <Alert />
             <v-card-title class="mt-4 mb-2">
-              <span>Welcome back, my friend!</span>
+              <p class="text-break">Welcome back, my friend!</p>
             </v-card-title>
               <v-form v-model="isValid" @submit.prevent="submit">
                 <v-container>
@@ -73,7 +76,7 @@
                   </v-row>
                   <v-row class="mx-4 mb-4">
                     <v-col cols="12">
-                      <p class="login-msg">Want to be part of us?</p>
+                      <v-btn @click="signupClick" class="login-msg">Want to be part of us?</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -86,10 +89,9 @@
 
 <script>
 import { mapActions } from "vuex";
-
 export default {
   name: 'login',
-  props: ['forgotClicked', 'knowPassword'],
+  props: ['forgotClicked', 'knowPassword', 'signupClick'],
   data: () => {
     return {
       dialog: true,
@@ -105,25 +107,16 @@ export default {
       passwordRules: [ 
         v => !!v || 'Password is required', 
         v => (v && v.length >= 5) || 'Password must have 5+ characters' 
-      ],
-      success: false,
-      error: false,
-      message: null
+      ]
     };
   },
   methods: {
     ...mapActions(['login']),
     async submit()
     {
-      try{
-       var resp = await this.login(this.user);
-       this.message = resp.data.message;
-      }
-      catch
-      {
-        const err =  this.$store.getters.stateErrors;
-        this.message = err.message;
-      }
+      var data = await this.postAxios("/login", this.user);
+    
+      this.$store.dispatch('getToken', data.access_token)
       this.dialog = false;
     }
   }

@@ -3,7 +3,7 @@
       <v-row justify="center">
           <v-card rounded="xl">
             <v-card-title class="mt-4 mb-2">
-              <p style="float: left;">Please input your  4-digit code in your email.</p>
+              <p class="text-break">Please input your  4-digit code in your email.</p>
             </v-card-title>
               <form @submit.prevent="submit">
                 <v-container>

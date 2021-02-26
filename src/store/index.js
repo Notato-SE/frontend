@@ -26,21 +26,31 @@ const actions = {
     var register = await axios.post('sign-up', form)
                               .catch((error) => { dispatch('getErrors', error.response.data)})
     const token = register.data.data.access_token;
-    dispatch('getToken', token); 
+    dispatch('getToken', token);
     return register;
   },
   async login({dispatch}, form)
   {
-      var login = await axios.post('login', form)
-                             .catch((error) => { dispatch('getErrors', error.response.data)})
+      const login = await axios.post('login', form)
+                               .catch((error) => { dispatch('getErrors', error.response.data)})
       const token = login.data.data.access_token;
       dispatch('getToken', token);
       return login;
-  },
+   },
   async getUser({commit})
   { 
-    let respone = await axios.get('profile');
-    commit('setUser', respone);
+    console.log("set user");
+    try
+    {
+      let response = await axios.get('profile').catch((err) => {console.log(err)});
+      
+      commit('setUser', response.data.data);
+    }
+    catch(e)
+    {
+        //console.log(e);
+    }
+  
   },
   async logout({commit})
   {
@@ -56,20 +66,17 @@ const actions = {
   },
   async createForgotPassword({dispatch}, data)
   {
-     var resp = await axios.post('forgot-password', data).catch((error) => {dispatch('getErrors', error.response.data)} );
      var user = new FormData();
      user.append('email' , data.email)
      user.append('password', data.new_password);
-     //console.log(resp);
      dispatch('login', user);
 
-     return resp;
   },
   getToken({commit}, token)
   {
+    console.log(token);
     localStorage.setItem('token', token)
-    axios.defaults.headers.common['Authorization'] = token;
-    console.log('token');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     commit('setToken', token)
   },
   getErrors({commit}, error)

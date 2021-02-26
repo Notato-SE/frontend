@@ -2,8 +2,9 @@
   <v-container>
     <v-row justify="center">
       <v-card rounded="xl">
+        <Alert />
         <v-card-title class="mt-4 mb-2">
-          <span>Please input your new password.</span>
+          <p class="text-break">Please input your new password.</p>
         </v-card-title>
         <v-form v-model="isValid" @submit.prevent="submit">
           <v-container>
@@ -57,6 +58,7 @@
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
   name: "forgot-password",
   props: ["backToLogin"],
@@ -72,7 +74,7 @@ export default {
       },
       passwordRules: [
         (v) => !!v || "Password is required",
-        (v) => (v && v.length >= 5) || "Password must have 5+ characters",
+        (v) => (v && v.length >= 8) || "Password must have 5+ characters",
       ],
       success: false,
       error: false,
@@ -85,19 +87,12 @@ export default {
       try {
         this.user.email = this.$store.getters.stateEmail;
         this.user.otp = this.$store.getters.stateOtp;
-        var resp = await this.createForgotPassword(this.user);
-        this.success = true;
-        this.error = false;
-        console.log(resp);
-        this.message = resp.data.message;
+        await this.postAxios("/forgot-password", this.user);
+        this.createForgotPassword(this.user);
         this.$emit("confirmPassword", true);
       } catch
       {
         this.$emit("confirmPassword", false);
-        const err = this.$store.getters.stateErrors;
-        this.message = err.message;
-        this.success = false;
-        this.error = true;
       }
     },
   },

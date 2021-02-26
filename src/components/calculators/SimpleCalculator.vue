@@ -59,42 +59,10 @@ import Calculator from "../../models/Calculator";
 
 export default {
   // components: { CalBtn, InputDisplay },
+  props: ["cal"],
   data: () => ({
-    cal: new Calculator(),
+    // cal: new Calculator(),
   }),
-  methods: {
-    appendVal(appendStr) {
-      this.cal.append(appendStr);
-      console.log("current val: " + this.cal.currVal);
-    },
-    operatorClicked(op) {
-      this.cal.setOp(op);
-    },
-    actionClicked(str) {
-      this.cal.action(str);
-    },
-  },
-  created() {
-    window.addEventListener("keydown", (e) => {
-      if (!isNaN(parseInt(e.key)) || e.key === ".") {
-        this.appendVal(e.key);
-      } else if (
-        ["+", "-", "/", "*", "Escape", "Enter", "Backspace"].includes(e.key)
-      ) {
-        console.log("op");
-        let clicked = e.key;
-        if (clicked === "Enter") clicked = "=";
-        else if (clicked === "Escape") clicked = "CE";
-        else if (clicked === "Backspace") clicked = "C";
-
-        if (["Escape", "Enter", "Backspace"].includes(e.key))
-          this.actionClicked(clicked);
-        else this.operatorClicked(clicked);
-      }
-
-      // console.log(e.key);
-    });
-  },
 };
 </script>
 <style scoped>

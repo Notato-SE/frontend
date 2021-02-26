@@ -8,8 +8,9 @@
             </v-btn>
           </template> -->
           <v-card rounded="xl">
+            <Alert />
             <v-card-title class="mt-4 mb-2">
-              <span>Welcome to our world!</span>
+              <p class="text-break">Welcome to our world!</p>
             </v-card-title>
             <v-form v-model="isValid" @submit.prevent="submit">
               <v-container>
@@ -130,19 +131,9 @@ export default {
     ...mapActions(["register"]),
     async submit()
     {
-      try{
-       var resp = await this.register(this.user);
-       this.success = true;
-       this.error = false;
-       this.message = resp.data.message;
-      }
-      catch
-      {
-        const err =  this.$store.getters.stateErrors;
-       
-      }
+      var data = await this.postAxios("/sign-up", this.user);
+      this.$store.dispatch('getToken', data.access_token)
       this.dialog = false;
-     
     },
   },
 };

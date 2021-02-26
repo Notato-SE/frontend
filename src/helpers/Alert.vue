@@ -1,11 +1,12 @@
 <template id="alert">
   <div v-if="show" class="d-flex justify-center mt-5">
-    <div style="width: 70%">
+    <div style="width: 80%">
       <v-alert
         v-model="show"
         outlined
         border="left"
         text
+        dense
         dismissible
         :type="type"
       >

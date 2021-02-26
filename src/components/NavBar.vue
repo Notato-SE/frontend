@@ -14,18 +14,39 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">
-        <!-- <v-text font="bold">Hi</v-text> -->
-        <v-btn @click="logOut" color="primary"> Log Out </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text color="primary" v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item class="d-block">
+              <v-list-item-title style="padding: 10px"
+                ><router-link class="text-dark text-decoration-none" to="/info"
+                  >Profile</router-link
+                ></v-list-item-title
+              >
+              <v-list-item-title style="padding: 10px"
+                ><span @click="logout">logout</span></v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </span>
       <span v-else>
         <v-dialog v-model="signup_dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               depressed
-              class="signup text-dark authenticated-btn"
+              :class="
+                $vuetify.breakpoint.xsOnly ? 'respon-btn' : 'authenticated-btn'
+              "
+              class="signup text-dark"
               @click="signup"
               v-bind="attrs"
               v-on="on"
+              :small="$vuetify.breakpoint.xsOnly"
             >
               SignUp
             </v-btn>
@@ -35,17 +56,23 @@
         <v-dialog v-model="login_dialog" max-width="450px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="authenticated-btn"
+              :class="
+                $vuetify.breakpoint.xsOnly ? 'respon-btn' : 'authenticated-btn'
+              "
               @click="login"
               color="primary"
               dark
               v-bind="attrs"
               v-on="on"
+              :small="$vuetify.breakpoint.xsOnly"
             >
               Login
             </v-btn>
           </template>
-          <login :forgotClicked="forgotClicked"></login>
+          <login
+            :forgotClicked="forgotClicked"
+            :signupClick="signupClick"
+          ></login>
         </v-dialog>
         <v-dialog v-model="forgot_dialog" max-width="450px">
           <reset-password
@@ -85,7 +112,6 @@ export default {
   components: { Login, Signup, ResetPassword, SendOtpCode, ForgotPassword },
   emits: ["update-dialog"],
   data: () => ({
-    drawer: false,
     signup_dialog: false,
     parent_dialog: false,
     login_dialog: false,
@@ -93,6 +119,10 @@ export default {
     collapseOnScroll: false,
     add_new_password: false,
     sent_otp: false,
+    window: {
+      width: 0,
+      height: 0,
+    },
     items: [
       {
         active: true,
@@ -128,13 +158,11 @@ export default {
   methods: {
     ...mapActions(["logout"]),
     update() {
-      this.drawer = !this.drawer;
-      this.$store.commit("updateDrawer", this.drawer);
-      console.log("drawer clicked " + this.drawer);
+      this.$store.commit("updateDrawer", !this.$store.state.drawer);
     },
     async logOut() {
-      console.log(this.$store.getters.token);
       await this.logout();
+      this.$router.push(`/?t=${Date.now()}`);
     },
     login() {
       this.login_dialog = true;
@@ -145,11 +173,10 @@ export default {
     forgotClicked() {
       this.forgot_dialog = true;
       this.login_dialog = false;
-      Vue.toast.success({
-        title: "Hello Sovath",
-        message: "Success",
-      });
-      console.log("he;");
+    },
+    signupClick() {
+      this.signup_dialog = true;
+      this.login_dialog = false;
     },
     knowPassword() {
       this.forgot_dialog = false;
@@ -203,6 +230,8 @@ export default {
 <style lang="scss">
 .authenticated-btn {
   margin-left: 30px;
+  white-space: normal !important;
+  word-wrap: break-word;
 }
 .signup {
   text-decoration: none;
@@ -211,5 +240,8 @@ export default {
 .login {
   text-decoration: none;
   font-weight: 600;
+}
+.respon-btn {
+  margin: 2px;
 }
 </style>

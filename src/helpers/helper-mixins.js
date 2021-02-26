@@ -75,8 +75,6 @@ export default {
       }
 
       return res?.data?.data;
-      // try {
-      // } catch (error) {}
     },
   },
 };
