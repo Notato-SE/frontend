@@ -1,7 +1,9 @@
 <template>
   <v-navigation-drawer app v-model="$store.state.drawer" @input="onUpdate">
     <v-list-item-group nav>
-      <v-list-item-group active-class="deep-purple--text text--accent-4">
+      <v-list-item-group
+        active-class="primary text--accent-4 white--text white"
+      >
         <v-list-item v-for="item in items" :key="item.title" :to="item.path">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -49,7 +51,7 @@ export default {
     drawer: function (newValue) {
       this.drawer = newValue;
       this.$store.commit("updateDrawer", newValue);
-      console.log(newValue);
+      // console.log(newValue);
     },
   },
 };

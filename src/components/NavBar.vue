@@ -1,11 +1,7 @@
 <template>
-  <nav>
-    <v-app-bar
-      app
-      color="white"
-      elevate-on-scroll
-      scroll-target="#scrolling-techniques-7"
-    >
+  <nav class="pb-5">
+    <v-app-bar app scroll-target="#scrolling-techniques-7" color="white">
+      <!-- elevate-on-scroll -->
       <v-app-bar-nav-icon @click.prevent="update()"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link to="/" style="text-decoration: none"
@@ -20,7 +16,7 @@
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
-          <v-list>
+          <!-- <v-list>
             <v-list-item class="d-block">
               <v-list-item-title style="padding: 10px"
                 ><router-link class="text-dark text-decoration-none" to="/info"
@@ -28,9 +24,25 @@
                 ></v-list-item-title
               >
               <v-list-item-title style="padding: 10px"
-                ><span @click="logout">logout</span></v-list-item-title
+                ><span @click="logout" style="cursor: pointer;">logout</span></v-list-item-title
               >
             </v-list-item>
+          </v-list> -->
+          <v-list class="pa-3">
+            <v-list-item-group color="primary">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title @click="$router.push(`/info`)"
+                    >Profile</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title @click="logOut">Logout</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
         </v-menu>
       </span>
@@ -119,6 +131,7 @@ export default {
     collapseOnScroll: false,
     add_new_password: false,
     sent_otp: false,
+    selectedItem: "",
     window: {
       width: 0,
       height: 0,
@@ -154,9 +167,17 @@ export default {
         if (newValue.login == 1) this.login_dialog = true;
       },
     },
+    selectedItem: {
+      handler(newValue) {
+        console.log(newValue);
+      },
+    },
   },
   methods: {
     ...mapActions(["logout"]),
+    testing(id) {
+      console.log(id);
+    },
     update() {
       this.$store.commit("updateDrawer", !this.$store.state.drawer);
     },
@@ -191,7 +212,7 @@ export default {
       this.signup_dialog = false;
     },
     sendOtp(param) {
-      console.log(param);
+      // console.log(param);
       if (param) {
         this.forgot_dialog = false;
         this.sent_otp = true;

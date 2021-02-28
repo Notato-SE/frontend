@@ -5,7 +5,7 @@
         cols="12"
         v-for="data in datas"
         :key="data.id"
-        class="border border-dark ma-1"
+        class="border border-light ma-1"
       >
         <v-row>
           <v-col cols="5">

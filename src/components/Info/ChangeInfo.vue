@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <div style="width: 50%; text-align: start">
-            <p>Email</p>
+            <p>Email Address</p>
             <v-text-field v-model="form.email" outlined readonly></v-text-field>
           </div>
         </v-col>
@@ -26,6 +26,9 @@
 
 <script>
 export default {
+  props: {
+    setName: Function,
+  },
   data: () => ({
     form: {},
   }),
@@ -40,6 +43,8 @@ export default {
     },
     async fetchData() {
       this.form = await this.getAxios("/profile");
+
+      this.setName(this.form.full_name);
     },
   },
 };

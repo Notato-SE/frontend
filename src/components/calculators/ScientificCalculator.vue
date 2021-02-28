@@ -272,18 +272,18 @@ export default {
     "cal.currVal": {
       handler(newVal) {
         const mf = document.getElementById("mathfield");
-        console.log(newVal, this.cal.currVal);
+        // console.log(newVal, this.cal.currVal);
         if (mf.getValue() !== this.cal.currVal) {
           mf.setValue(this.cal.currVal === "" ? "0" : this.cal.currVal);
         }
-        console.log(["CurrVal Updated", this.cal]);
+        // console.log(["CurrVal Updated", this.cal]);
 
         this.cal.setCurrVal(newVal);
       },
     },
     "cal.history": {
       handler(newVal) {
-        console.log("History Updated");
+        // console.log("History Updated");
         this.history = newVal;
 
         document.getElementById("history").setValue(this.history);
@@ -295,15 +295,15 @@ export default {
       this.windowWidth = window.innerWidth;
     },
     mathFieldChange(ev) {
-      console.log("math field changed");
+      // console.log("math field changed");
       this.cal.currVal = ev.target.getValue();
       // this.cal.setCurrVal(ev.target.getValue());
     },
     appendVal(appendStr) {
-      console.log([
-        this.cal.history !== "",
-        !isNaN(parseInt(appendStr)) || appendStr === ".",
-      ]);
+      // console.log([
+      //   this.cal.history !== "",
+      //   !isNaN(parseInt(appendStr)) || appendStr === ".",
+      // ]);
       if (
         this.cal.history !== "" &&
         (!isNaN(parseInt(appendStr)) || appendStr === ".")

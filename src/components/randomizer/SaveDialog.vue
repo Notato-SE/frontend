@@ -6,7 +6,7 @@
           Save the results
         </v-card-title> -->
 
-        <h4 class="pt-5 pl-5" style="text-align: start">
+        <h4 class="pa-5" style="text-align: start">
           Provide a meaningful name so that you can recall it later.
         </h4>
 
@@ -16,16 +16,22 @@
             <v-text-field
               v-model="internal_form.name"
               outlined
+              :rules="[rules.required]"
               placeholder="My student final project team"
             ></v-text-field>
+            <div class="pb-5">
+              <v-btn
+                :class="internal_form.name.length <= 0 ? '' : 'primary'"
+                @click="save()"
+                :disabled="internal_form.name.length <= 0"
+                :loading="loading"
+                style="width: 100%"
+              >
+                SAVE
+              </v-btn>
+            </div>
           </div>
         </div>
-
-        <v-card-actions class="d-flex justify-end">
-          <v-btn color="primary" text @click="save()" :loading="loading">
-            Save
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -36,8 +42,13 @@ export default {
     tab: "",
     internal_dialog: false,
     results: undefined,
-    internal_form: {},
+    internal_form: {
+      name: "",
+    },
     loading: false,
+    rules: {
+      required: (value) => !!value || "This field is required.",
+    },
   }),
   props: {
     dialog: Boolean,
@@ -73,7 +84,7 @@ export default {
     form: {
       immediate: true,
       handler(newValue) {
-        this.internal_form = newValue;
+        this.internal_form = { ...this.internal_form, newValue };
       },
     },
     internal_dialog: {

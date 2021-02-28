@@ -66,7 +66,7 @@ export default {
   methods: {
     appendVal(appendStr) {
       this.cal.append(appendStr);
-      console.log("current val: " + this.cal.currVal);
+      // console.log("current val: " + this.cal.currVal);
     },
     operatorClicked(op) {
       this.cal.setOp(op);

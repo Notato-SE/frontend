@@ -30,6 +30,13 @@ export default {
     EventBus.$on("SET_ALERT", (payload) => {
       this.setAlert(payload);
     });
+    EventBus.$on("CLEAR_ALERT", () => {
+      this.setAlert({
+        show: false,
+        type: "success",
+        message: "message",
+      });
+    });
   },
   methods: {
     setAlert({ show, type, message }) {

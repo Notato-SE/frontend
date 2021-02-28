@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-card color="basil">
-      <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+      <v-tabs
+        v-model="tab"
+        background-color="transparent"
+        color="basil"
+        grow
+        class="pa-3"
+      >
         <v-tab v-for="item in items" :key="item.key">
           {{ item.text }}
         </v-tab>
@@ -60,7 +66,7 @@ export default {
       } else if (
         ["+", "-", "/", "*", "Escape", "Enter", "Backspace"].includes(e.key)
       ) {
-        console.log("op");
+        // console.log("op");
         let clicked = e.key;
         if (clicked === "Enter") clicked = "=";
         else if (clicked === "Escape") clicked = "CE";

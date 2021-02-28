@@ -18,7 +18,7 @@
 
             <v-tabs-items v-model="tab" class="mt-5">
               <v-tab-item> <SavedList /> </v-tab-item>
-              <v-tab-item> <ChangeInfo /> </v-tab-item>
+              <v-tab-item> <ChangeInfo :setName="setName" /> </v-tab-item>
               <v-tab-item> <ChangePassword /> </v-tab-item>
             </v-tabs-items>
           </v-tabs>
@@ -46,6 +46,11 @@ export default {
   }),
   async beforeMount() {
     this.form = await this.getAxios("/profile");
+  },
+  methods: {
+    setName(name) {
+      this.form.full_name = name;
+    },
   },
 };
 </script>

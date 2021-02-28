@@ -45,7 +45,7 @@ export default function Calculator() {
         this.currVal = "0";
       }
 
-      console.log(this.op);
+      // console.log(this.op);
       this.checkAndFormatCurrVal();
     },
     checkAndFormatCurrVal() {
@@ -85,7 +85,7 @@ export default function Calculator() {
         case "M+":
         case "M-":
           const mem = localStorage.getItem("mem") ?? "0";
-          console.log([mem, parseFloat(this.currVal)]);
+          // console.log([mem, parseFloat(this.currVal)]);
           localStorage.setItem(
             "mem",
             str === "M+"
@@ -107,7 +107,7 @@ export default function Calculator() {
       this.checkAndFormatCurrVal();
     },
     calculate() {
-      console.log(this.history);
+      // console.log(this.history);
       if (this.values[0] === "0" && this.currVal === "0" && this.op === "/")
         return "Division by zero";
 

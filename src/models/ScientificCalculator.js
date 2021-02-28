@@ -8,7 +8,7 @@ export default function ScientificCalculator(math) {
     mrcClickedPreviously: false,
     append(appendStr) {
       this.resetMrcPreviouslyClicked();
-      console.log({ reset: this.justReset });
+      // console.log({ reset: this.justReset });
       if (this.justReset) {
         this.reset();
         this.currVal = "";
@@ -37,7 +37,7 @@ export default function ScientificCalculator(math) {
         : str;
     },
     action(str) {
-      console.log({ reset: this.justReset });
+      // console.log({ reset: this.justReset });
 
       if (this.justReset) {
         this.reset();
@@ -73,7 +73,7 @@ export default function ScientificCalculator(math) {
         case "M+":
         case "M-":
           const mem = localStorage.getItem("mem") ?? "0";
-          console.log(mem);
+          // console.log(mem);
           localStorage.setItem(
             "mem",
             str === "M+"
@@ -98,12 +98,12 @@ export default function ScientificCalculator(math) {
       if (this.currVal === "") return "0";
 
       try {
-        console.log({
-          currVal: this.currVal,
-          dis: this.displayToFormula(
-            document.getElementById("mathfield").getValue("ASCIIMath")
-          ),
-        });
+        // console.log({
+        //   currVal: this.currVal,
+        //   dis: this.displayToFormula(
+        //     document.getElementById("mathfield").getValue("ASCIIMath")
+        //   ),
+        // });
         return math.evaluate(this.displayToFormula(this.currVal)).toString();
       } catch (_) {
         return "Invalid format.";

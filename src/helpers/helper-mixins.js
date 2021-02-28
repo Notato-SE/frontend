@@ -66,12 +66,15 @@ export default {
           show: true,
           message,
         });
-      } else if (showAlert) {
-        EventBus.$emit("SET_ALERT", {
-          type: "success",
-          show: true,
-          message: res?.data?.message,
-        });
+      } else {
+        EventBus.$emit("CLEAR_ALERT");
+        if (showAlert) {
+          EventBus.$emit("SET_ALERT", {
+            type: "success",
+            show: true,
+            message: res?.data?.message,
+          });
+        }
       }
 
       return res?.data?.data;
