@@ -127,7 +127,7 @@ export default {
       ],
       passwordRules: [
         (v) => !!v || "Password is required",
-        (v) => (v && v.length >= 5) || "Password must have 5+ characters",
+        (v) => (v && v.length >= 8) || "Password must have 8+ characters",
       ],
     };
   },
