@@ -30,6 +30,9 @@ export default {
   data: () => ({
     drawer: false,
   }),
+  created() {
+    document.title = "Notato";
+  },
 };
 
 Vue.mixin(helperMixins);
