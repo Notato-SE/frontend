@@ -10,7 +10,7 @@ import "@/assets/css/main.css";
 
 //axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = "https://calculator_api.blah/v1";
-axios.defaults.baseURL = "https://notato.doxxie.live/v1";
+axios.defaults.baseURL = "https://notatoapi.doxxie.live/v1";
 // axios.defaults.baseURL = "https://backend.test/v1";
 Vue.prototype.$http = axios;
 
