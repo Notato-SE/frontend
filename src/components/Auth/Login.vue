@@ -106,11 +106,8 @@ export default {
     return {
       dialog: true,
       user: {
-        // email: "",
-        // password: "",
-        //TODELETE
-        email: "schean@paragoniu.edu.kh",
-        password: "password",
+        email: "",
+        password: "",
       },
       loading: false,
       isValid: true,

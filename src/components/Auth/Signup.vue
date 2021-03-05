@@ -60,7 +60,7 @@
                 <v-text-field
                   class="style-field"
                   v-model="user.password"
-                  label="Default Input"
+                  label="Your Password"
                   type="password"
                   single-line
                   id="hello"
@@ -129,22 +129,6 @@ export default {
         (v) => !!v || "Password is required",
         (v) => (v && v.length >= 8) || "Password must have 8+ characters",
       ],
-    };
-  },
-  //TODELETE
-  mounted() {
-    var str = ""; // String result
-    for (var i = 0; i < 7; i++) {
-      // Loop `len` times
-      var rand = Math.floor(Math.random() * 62); // random: 0..61
-      var charCode = (rand += rand > 9 ? (rand < 36 ? 55 : 61) : 48); // Get correct charCode
-      str += String.fromCharCode(charCode); // add Character to str
-    }
-
-    this.user = {
-      full_name: str,
-      email: `${str}@gmail.com`,
-      password: "password",
     };
   },
   methods: {

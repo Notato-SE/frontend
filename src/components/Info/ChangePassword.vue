@@ -68,12 +68,10 @@
 <script>
 export default {
   data: () => ({
-    // form: {},
-    //TODELETE
     form: {
-      old_password: "password",
-      new_password: "password",
-      new_password_confirmation: "password",
+      old_password: "",
+      new_password: "",
+      new_password_confirmation: "",
     },
     show: {
       old_password: false,
@@ -88,6 +86,9 @@ export default {
     canSave() {
       return (form) => {
         return !(
+          form.old_password &&
+          form.new_password &&
+          form.new_password_confirmation &&
           form.old_password.length &&
           form.new_password.length &&
           form.new_password_confirmation.length
