@@ -32,6 +32,7 @@
 </template>
 
 
+
 <script>
 import CustomList from "@/components/randomizer/CustomList.vue";
 import Picker from "@/components/randomizer/Picker.vue";
