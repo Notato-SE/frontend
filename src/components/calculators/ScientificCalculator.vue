@@ -283,7 +283,7 @@ export default {
     },
     "cal.history": {
       handler(newVal) {
-        // console.log("History Updated");
+        console.log("History Updated");
         this.history = newVal;
 
         document.getElementById("history").setValue(this.history);
@@ -295,23 +295,31 @@ export default {
       this.windowWidth = window.innerWidth;
     },
     mathFieldChange(ev) {
-      // console.log("math field changed");
+      // console.log(["CurrVal Updated", this.cal]);
+
       this.cal.currVal = ev.target.getValue();
+      // console.log("math field changed");
       // this.cal.setCurrVal(ev.target.getValue());
     },
     appendVal(appendStr) {
-      // console.log([
-      //   this.cal.history !== "",
-      //   !isNaN(parseInt(appendStr)) || appendStr === ".",
-      // ]);
+      console.log([
+        document.getElementById("history").getValue(),
+        this.cal.history !== "",
+        !isNaN(parseInt(appendStr)) || appendStr === ".",
+      ]);
+
       if (
-        this.cal.history !== "" &&
+        (this.cal.history !== "" ||
+          document.getElementById("history").getValue() !== "") &&
         (!isNaN(parseInt(appendStr)) || appendStr === ".")
-      )
-        this.cal.currVal = "0";
+      ) {
+        this.cal.currVal = "";
+      }
 
       if (this.cal.currVal === "0" || this.cal.currVal === "")
-        document.getElementById("mathfield").setValue(appendStr);
+        document
+          .getElementById("mathfield")
+          .setValue(appendStr === "." ? "0." : appendStr);
       else document.getElementById("mathfield").insert(appendStr);
 
       if (this.cal.history === "")

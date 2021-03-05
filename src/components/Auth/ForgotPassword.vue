@@ -74,7 +74,7 @@ export default {
       },
       passwordRules: [
         (v) => !!v || "Password is required",
-        (v) => (v && v.length >= 8) || "Password must have 5+ characters",
+        (v) => (v && v.length >= 8) || "Password must have 8+ characters",
       ],
       success: false,
       error: false,
@@ -90,8 +90,7 @@ export default {
         await this.postAxios("/forgot-password", this.user);
         this.createForgotPassword(this.user);
         this.$emit("confirmPassword", true);
-      } catch
-      {
+      } catch {
         this.$emit("confirmPassword", false);
       }
     },
