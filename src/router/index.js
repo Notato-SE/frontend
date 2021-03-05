@@ -45,7 +45,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Randomizer.vue"),
     meta: { requiresAuth: true },
-    
   },
   {
     path: "/info",
@@ -56,6 +55,10 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Information.vue"),
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/*",
+    component: 404,
   },
 ];
 
