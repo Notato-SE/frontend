@@ -30,7 +30,7 @@ export default {
       handler(newValue) {
         if (!newValue) return;
 
-        this.form = newValue.inputs;
+        // this.form = newValue.inputs;
         this.form = { ...this.form, ...newValue };
         this.form.unorganized_inputs = this.form.inputs.inputs.join("\n");
       },

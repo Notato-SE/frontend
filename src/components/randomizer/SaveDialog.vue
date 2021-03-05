@@ -84,7 +84,7 @@ export default {
     form: {
       immediate: true,
       handler(newValue) {
-        this.internal_form = { ...this.internal_form, newValue };
+        this.internal_form = { ...this.internal_form, ...newValue };
       },
     },
     internal_dialog: {
