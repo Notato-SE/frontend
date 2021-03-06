@@ -39,7 +39,7 @@
 <script>
 export default {
   props: {
-    results: Object,
+    results: [Object, Array],
     random_type: Number,
   },
 };

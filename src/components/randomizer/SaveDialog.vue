@@ -78,6 +78,7 @@ export default {
     },
     form: {
       immediate: true,
+      deep: true,
       handler(newValue) {
         this.internal_form = { name: this.internal_form.name, ...newValue };
       },
