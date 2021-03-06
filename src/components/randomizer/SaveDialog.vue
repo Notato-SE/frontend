@@ -2,10 +2,6 @@
   <div>
     <v-dialog v-model="internal_dialog" width="500" @close="closeDialog()">
       <v-card class="rounded-lg">
-        <!-- <v-card-title class="headline grey lighten-2">
-          Save the results
-        </v-card-title> -->
-
         <h4 class="pa-5" style="text-align: start">
           Provide a meaningful name so that you can recall it later.
         </h4>
@@ -41,7 +37,6 @@ export default {
   data: () => ({
     tab: "",
     internal_dialog: false,
-    results: undefined,
     internal_form: {
       name: "",
     },
@@ -58,7 +53,7 @@ export default {
   methods: {
     async save() {
       this.loading = true;
-      if (this.form.results) {
+      if (this.internal_form.results) {
         try {
           await this.postAxios("/randomizer/save", this.internal_form);
         } catch (error) {
@@ -84,7 +79,7 @@ export default {
     form: {
       immediate: true,
       handler(newValue) {
-        this.internal_form = { ...this.internal_form, ...newValue };
+        this.internal_form = { name: this.internal_form.name, ...newValue };
       },
     },
     internal_dialog: {
